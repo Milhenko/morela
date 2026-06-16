@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moreal | Constructora y Desarrolladora Inmobiliaria Premium</title>
+    <meta name="description" content="Construimos tu patrimonio con plazos garantizados, presupuesto cerrado por contrato y sin sorpresas ni sobrecostos ocultos.">
+    
+    <!-- Google Fonts: Playfair Display para títulos y Montserrat para legibilidad y números -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. SISTEMA DE DISEÑO Y VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-primary: #0a0a0a;       /* Negro principal */
+            --bg-secondary: #1a1a1a;     /* Fondo del cinturón / Tarjetas / Secciones alternas */
+            --text-primary: #ffffff;     /* Blanco */
+            --text-secondary: #8c8c8c;   /* Gris secundario para descripciones */
+            --accent: #b8860b;           /* Tono madera/dorado oscuro */
+            --accent-hover: #d4af37;     /* Dorado claro para interacción */
+            --accent-glow: rgba(184, 134, 11, 0.4);
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset y Estilos Base */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        /* Utilidades */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-accent {
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        /* ==========================================================================
+           2. HEADER Y NAVEGACIÓN STICKY
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 24px 0;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            padding: 16px 0;
+            background: rgba(10, 10, 10, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: var(--text-primary);
+        }
+
+        .logo-sub {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--accent);
+            margin-top: -2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        nav ul a {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        nav ul a:hover, nav ul a.active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            border: 1px solid var(--accent);
+            padding: 10px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-cta:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: var(--text-primary);
+            transition: var(--transition-smooth);
+        }
+
+        /* ==========================================================================
+           3. MÓDULO 1: HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--bg-primary);
+        }
+
+        /* Efecto de zoom lento para fondo arquitectónico */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('hero_background.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            transform: scale(1);
+            animation: slowZoom 25s infinite alternate ease-in-out;
+        }
+
+        /* Capas de gradiente oscuro para legibilidad garantizada */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(10, 10, 10, 0.8) 50%, 
+                rgba(10, 10, 10, 0.95) 100%
+            );
+            z-index: 2;
+        }
+
+        /* Líneas guías arquitectónicas decorativas */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0));
+            z-index: 3;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 10%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.03), rgba(255,255,255,0));
+            z-index: 3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 4;
+            max-width: 880px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        /* Entrada de animación escalonada */
+        .hero-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-tagline {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+            animation-delay: 0.1s;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(32px, 5vw, 62px);
+            line-height: 1.15;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 24px;
+            animation-delay: 0.3s;
+        }
+
+        .hero-description {
+            font-size: clamp(15px, 2vw, 18px);
+            font-weight: 300;
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin: 0 auto 40px auto;
+            line-height: 1.7;
+            animation-delay: 0.5s;
+        }
+
+        .hero-cta-wrapper {
+            animation-delay: 0.7s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Botón de acción con destello y hover interactivo */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            padding: 20px 42px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(184, 134, 11, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                rgba(255, 255, 255, 0) 0%, 
+                rgba(255, 255, 255, 0.15) 50%, 
+                rgba(255, 255, 255, 0) 100%
+            );
+            transform: skewX(-25deg);
+            transition: none;
+        }
+
+        .btn-primary:hover::after {
+            left: 150%;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 12px 35px var(--accent-glow), 0 0 0 2px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(-1px);
+        }
+
+        /* Micro-copy de confianza psicológica */
+        .hero-trust-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+
+        .hero-trust-indicator svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        /* Indicador de scroll */
+        .scroll-down {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .scroll-down:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent) 50%, transparent 100%);
+            animation: scrollLineAnimation 2s infinite ease-in-out;
+        }
+
+        /* ==========================================================================
+           4. MÓDULO 2: CINTURÓN DE CONFIANZA
+           ========================================================================== */
+        .trust-belt {
+            background-color: var(--bg-secondary);
+            padding: 80px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+            z-index: 10;
+            box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+        }
+
+        .pillar-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            padding: 40px 30px;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Línea superior dorada animada en hover */
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-smooth);
+        }
+
+        .pillar-card:hover {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(184, 134, 11, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .pillar-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .icon-container {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            background: rgba(184, 134, 11, 0.08);
+            border: 1px solid rgba(184, 134, 11, 0.15);
+            color: var(--accent);
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .pillar-card:hover .icon-container {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        .pillar-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .pillar-title {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+        }
+
+        .pillar-card:hover .pillar-title {
+            color: var(--accent-hover);
+        }
+
+        .pillar-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* ==========================================================================
+           5. MÓDULO 3: GALERÍA DE PROYECTOS (PRUEBA SOCIAL IRREFUTABLE)
+           ========================================================================== */
+        .projects {
+            background-color: var(--bg-primary);
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-tagline {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 18px;
+            color: var(--text-primary);
+        }
+
+        .section-description {
+            font-size: clamp(14px, 1.5vw, 16px);
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .project-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(184, 134, 11, 0.2);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            overflow: hidden;
+            background-color: #151515;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .project-card:hover .project-image {
+            transform: scale(1.06);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(10,10,10,0) 60%, rgba(10,10,10,0.5) 100%);
+        }
+
+        .project-info {
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .project-card-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+
+        .project-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .project-badge {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 5px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            background-color: rgba(184, 134, 11, 0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .project-card:hover .project-badge {
+            border-color: var(--accent-hover);
+            color: var(--accent-hover);
+            background-color: rgba(184, 134, 11, 0.08);
+        }
+
+        .project-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: auto;
+            /* Limitar a dos líneas para orden simétrico */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ==========================================================================
+           6. MÓDULO 4: SOLUCIONES ESPECIALIZADAS (NUESTROS SERVICIOS)
+           ========================================================================== */
+        .services {
+            background-color: var(--bg-primary);
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .service-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 50px 40px;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-smooth);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(184, 134, 11, 0.3);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover .icon-container {
+            background: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        .service-title {
+            font-family: var(--font-serif);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            transition: var(--transition-smooth);
+        }
+
+        .service-card:hover .service-title {
+            color: var(--accent-hover);
+        }
+
+        .service-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        /* Botón secundario Outline */
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 14px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            margin-top: auto;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--accent-glow);
+            border-color: var(--accent);
+        }
+
+        /* ==========================================================================
+           7. MÓDULO 5: NUESTRO PROCESO TRANSPARENTE
+           ========================================================================== */
+        .process {
+            background-color: var(--bg-secondary);
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative;
+        }
+
+        /* Línea horizontal del timeline en escritorio */
+        .timeline-grid::before {
+            content: '';
+            position: absolute;
+            top: 75px;
+            left: 5%;
+            width: 90%;
+            height: 1px;
+            background: linear-gradient(to right, rgba(184, 134, 11, 0) 0%, rgba(184, 134, 11, 0.4) 15%, rgba(184, 134, 11, 0.4) 85%, rgba(184, 134, 11, 0) 100%);
+            z-index: 1;
+        }
+
+        .step-card {
+            background-color: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 40px 24px;
+            transition: var(--transition-smooth);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(184, 134, 11, 0.3);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .step-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+            font-family: var(--font-sans);
+        }
+
+        .step-card:hover .step-number {
+            color: var(--accent-hover);
+            transform: scale(1.08);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .step-title {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           8. MÓDULO 6: CTA FINAL
+           ========================================================================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            padding: 120px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .cta-content {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: var(--font-serif);
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1.25;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .cta-desc {
+            font-size: clamp(15px, 2vw, 17px);
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        .btn-whatsapp-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            padding: 20px 48px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-whatsapp-cta:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 12px 35px var(--accent-glow), 0 0 0 2px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-whatsapp-cta svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* ==========================================================================
+           9. FOOTER (PIE DE PÁGINA)
+           ========================================================================== */
+        footer {
+            background-color: #050505;
+            padding: 80px 0 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1fr;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .footer-col h5 {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-col p {
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .footer-logo-sub {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-top: -6px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col ul a {
+            transition: var(--transition-smooth);
+            font-weight: 300;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--accent-hover);
+            padding-left: 5px;
+        }
+
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .footer-contact-item svg {
+            width: 16px;
+            height: 16px;
+            color: var(--accent);
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           10. BOTÓN FLOTANTE DE WHATSAPP (CRO FAMILIARIDAD)
+           ========================================================================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            transition: var(--transition-smooth);
+            animation: pulseWhatsApp 2s infinite;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            background-color: #22c35e;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-float svg {
+            width: 32px;
+            height: 32px;
+            fill: currentColor;
+        }
+
+        /* ==========================================================================
+           11. ANIMACIONES
+           ========================================================================== */
+        @keyframes slowZoom {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollLineAnimation {
+            0% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+            51% {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+
+        @keyframes pulseWhatsApp {
+            0% {
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 0 0px rgba(37, 211, 102, 0.5);
+            }
+            70% {
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 0 0px rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* ==========================================================================
+           12. CONSULTAS DE MEDIOS RESPONSIVAS (Mobile First / Breakpoints)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .pillars-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            .timeline-grid::before {
+                display: none; 
+            }
+            .footer-grid {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 16px 0;
+            }
+            
+            nav {
+                display: none; 
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-cta {
+                display: none; 
+            }
+
+            .hero-content {
+                padding: 0 10px;
+            }
+
+            .hero-title {
+                margin-bottom: 20px;
+            }
+
+            .hero-description {
+                margin-bottom: 32px;
+            }
+
+            .trust-belt {
+                padding: 60px 0;
+            }
+            
+            .pillar-card {
+                padding: 30px 20px;
+            }
+
+            .projects, .services, .process, .cta-section {
+                padding: 70px 0;
+            }
+
+            .service-card {
+                padding: 40px 24px;
+            }
+
+            .step-card {
+                padding: 30px 20px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+            .whatsapp-float svg {
+                width: 26px;
+                height: 26px;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .projects-grid, .services-grid, .timeline-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pillars-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .btn-primary, .btn-whatsapp-cta {
+                width: 100%;
+                padding: 18px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY HEADER / BARRA DE NAVEGACIÓN -->
+    <header id="header">
+        <div class="container nav-wrapper">
+            <div class="logo-container">
+                <span class="logo-main">MOREAL</span>
+                <span class="logo-sub">Desarrollos & Obras</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#inicio" class="active">Inicio</a></li>
+                    <li><a href="#garantias">Garantías de Obra</a></li>
+                    <li><a href="#trayectoria">Proyectos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#proceso">Proceso</a></li>
+                </ul>
+            </nav>
+            <a href="#cotizar" class="nav-cta" onclick="triggerCTA()">Cotizar</a>
+            <button class="nav-toggle" aria-label="Menu" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MÓDULO 1: HERO SECTION -->
+    <section class="hero" id="inicio">
+        <!-- Imagen de fondo animada en escala -->
+        <div class="hero-bg"></div>
+        <!-- Capa de oscurecimiento -->
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <p class="hero-tagline hero-animate">Construcción Garantizada</p>
+            <h1 class="hero-title hero-animate">
+                Tu Obra a Tiempo, a Precio Fijo y <span class="text-accent">Sin Sorpresas.</span>
+            </h1>
+            <p class="hero-description hero-animate">
+                Construimos y remodelamos tu patrimonio con garantías legales firmadas. Dile adiós a los retrasos injustificados y a los presupuestos inflados a mitad de camino.
+            </p>
+            <div class="hero-cta-wrapper hero-animate">
+                <button class="btn-primary" onclick="triggerCTA()">
+                    Cotiza tu Proyecto a Medida en 2 Minutos
+                </button>
+                <div class="hero-trust-indicator">
+                    <!-- Icono de escudo de seguridad -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>Fianza y garantía de cumplimiento ante Notario Público</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indicador de desplazamiento hacia abajo -->
+        <div class="scroll-down" onclick="scrollToTrust()">
+            <span>Garantías</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 2: CINTURÓN DE CONFIANZA -->
+    <section class="trust-belt" id="garantias">
+        <div class="container">
+            <div class="pillars-grid">
+                
+                <!-- Pilar 1: +10 Años -->
+                <div class="pillar-card">
+                    <div class="icon-container">
+                        <!-- Icono de Templo/Estabilidad (Trayectoria) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <line x1="2" y1="20" x2="22" y2="20"></line>
+                            <line x1="5" y1="17" x2="19" y2="17"></line>
+                            <path d="M6 17V8h3v9"></path>
+                            <path d="M10.5 17V8h3v9"></path>
+                            <path d="M15 17V8h3v9"></path>
+                            <path d="M5 8h14L12 3z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="pillar-title">+10 Años</h2>
+                    <p class="pillar-desc">De trayectoria real y comprobable liderando obras residenciales y comerciales de alto estándar.</p>
+                </div>
+
+                <!-- Pilar 2: Presupuesto Cerrado -->
+                <div class="pillar-card">
+                    <div class="icon-container">
+                        <!-- Icono de Contrato blindado con candado -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <rect x="8" y="12" width="8" height="6" rx="1"></rect>
+                            <path d="M10 12v-2a2 2 0 0 1 4 0v2"></path>
+                        </svg>
+                    </div>
+                    <h2 class="pillar-title">Presupuesto Cerrado</h2>
+                    <p class="pillar-desc">Por contrato formal firmado ante notario. No añadimos costos imprevistos a mitad de camino.</p>
+                </div>
+
+                <!-- Pilar 3: Garantía Técnica -->
+                <div class="pillar-card">
+                    <div class="icon-container">
+                        <!-- Icono de Compás de arquitecto e ingenieros -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <circle cx="12" cy="4" r="1.5"></circle>
+                            <path d="M12 5.5L6 20"></path>
+                            <path d="M12 5.5L18 20"></path>
+                            <path d="M9 15a4 4 0 0 1 6 0"></path>
+                            <path d="M4 20h16"></path>
+                        </svg>
+                    </div>
+                    <h2 class="pillar-title">Garantía Técnica</h2>
+                    <p class="pillar-desc">Arquitectos e ingenieros debidamente colegiados que aseguran el estricto cumplimiento estructural.</p>
+                </div>
+
+                <!-- Pilar 4: Plazos Fijos -->
+                <div class="pillar-card">
+                    <div class="icon-container">
+                        <!-- Icono de Calendario y Reloj -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                            <circle cx="12" cy="16" r="3"></circle>
+                            <polyline points="12 14 12 16 13.5 16"></polyline>
+                        </svg>
+                    </div>
+                    <h2 class="pillar-title">Plazos Fijos</h2>
+                    <p class="pillar-desc">Cronogramas de entrega estrictos. Penalización monetaria establecida en contrato ante cualquier retraso.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 3: GALERÍA DE PROYECTOS (PRUEBA SOCIAL IRREFUTABLE) -->
+    <section class="projects" id="trayectoria">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tagline">Prueba Social Real</p>
+                <h2 class="section-title">Resultados Reales. <span class="text-accent">Cero Excusas.</span></h2>
+                <p class="section-description">
+                    Explora algunas de nuestras obras entregadas donde el presupuesto inicial y la fecha de entrega se cumplieron al 100%.
+                </p>
+            </div>
+            
+            <div class="projects-grid">
+                
+                <!-- Tarjeta Proyecto 1 -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="project_1.png" alt="Residencia en Vía a la Costa" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Residencia en Vía a la Costa</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Construcción integral de una residencia de lujo de 450 m². Proceso completado en el plazo exacto de 8 meses.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Proyecto 2 -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="project_2.png" alt="Edificio Residencial La Luna" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Edificio Residencial La Luna</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Desarrollo de condominio de 6 plantas y áreas comunes. Entregado sin adendas de costo ni retrasos de obra civil.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Proyecto 3 -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="project_3.png" alt="Villa Renacimiento" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Villa Renacimiento</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Remodelación estructural profunda y ampliación de casa unifamiliar. Costos garantizados contractualmente.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 4: SOLUCIONES ESPECIALIZADAS -->
+    <section class="services" id="servicios">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tagline">Nuestras Soluciones</p>
+                <h2 class="section-title">Soluciones a Medida de tu <span class="text-accent">Inversión.</span></h2>
+                <p class="section-description">
+                    No importa si empiezas desde cero o transformas un espacio existente. Nuestro compromiso es blindar tu patrimonio en cada etapa con presupuesto cerrado.
+                </p>
+            </div>
+            
+            <div class="services-grid">
+                
+                <!-- Tarjeta 1: Construcción desde Cero -->
+                <div class="service-card">
+                    <div class="icon-container">
+                        <!-- Icono de Plano Estructural (Casa/Ingeniería) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Construcción desde Cero</h3>
+                    <p class="service-desc">
+                        Diseño, ingeniería y ejecución técnica con arquitectos colegiados. Mitigamos riesgos y garantizamos la solidez estructural de tu nuevo hogar sin desvíos de presupuesto ni tiempos muertos.
+                    </p>
+                    <a href="construccion.html" class="btn-outline" style="text-decoration:none; display:inline-block;">COTIZAR CONSTRUCCIÓN</a>
+                </div>
+
+                <!-- Tarjeta 2: Remodelación Residencial -->
+                <div class="service-card">
+                    <div class="icon-container">
+                        <!-- Icono de Rodillo de Pintura (Remodelación Residencial) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <path d="M6 3h12a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+                            <path d="M4 6h16"></path>
+                            <path d="M12 9v4a2 2 0 0 0 2 2h2a1 1 0 0 1 1 1v5"></path>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Remodelación Residencial</h3>
+                    <p class="service-desc">
+                        Transformamos y revalorizamos tu inmueble de forma estratégica. Optimizamos espacios con acabados premium para elevar su valor de mercado, respetando estrictamente el cronograma de obra.
+                    </p>
+                    <a href="remodelacion.html" class="btn-outline" style="text-decoration:none; display:inline-block;">COTIZAR RESIDENCIAL</a>
+                </div>
+
+                <!-- Tarjeta 3: Remodelación Comercial -->
+                <div class="service-card">
+                    <div class="icon-container">
+                        <!-- Icono de Local Comercial / Maletín -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="pillar-icon">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"></path>
+                            <line x1="12" y1="12" x2="12" y2="12"></line>
+                            <path d="M2 12h9m2 0h9"></path>
+                            <circle cx="12" cy="12" r="1" fill="currentColor"></circle>
+                        </svg>
+                    </div>
+                    <h3 class="service-title">Remodelación Comercial</h3>
+                    <p class="service-desc">
+                        Minimizamos el lucro cesante de tu negocio. Diseñamos y ejecutamos locales u oficinas que atraen clientes y elevan tu marca, garantizando fechas exactas para tu gran apertura.
+                    </p>
+                    <button class="btn-outline" onclick="triggerCTA()">COTIZAR COMERCIAL</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 5: NUESTRO PROCESO TRANSPARENTE -->
+    <section class="process" id="proceso">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-tagline">Metodología de Trabajo</p>
+                <h2 class="section-title">Una Metodología Clara. <span class="text-accent">Cero Estrés.</span></h2>
+                <p class="section-description">
+                    Olvídate del desorden y la incertidumbre. Hemos diseñado un proceso de 4 pasos para que disfrutes la transformación de tu patrimonio con total tranquilidad.
+                </p>
+            </div>
+            
+            <div class="timeline-grid">
+                
+                <!-- Paso 1 -->
+                <div class="step-card">
+                    <span class="step-number">01</span>
+                    <h4 class="step-title">Diagnóstico y Asesoría</h4>
+                    <p class="step-desc">
+                        Evaluamos tu espacio o terreno y entendemos tu visión para asegurar la viabilidad técnica y financiera desde el día uno.
+                    </p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="step-card">
+                    <span class="step-number">02</span>
+                    <h4 class="step-title">Presupuesto Inamovible</h4>
+                    <p class="step-desc">
+                        Desarrollamos el diseño y firmamos un contrato con precio fijo y cronograma exacto. Sin costos ocultos.
+                    </p>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="step-card">
+                    <span class="step-number">03</span>
+                    <h4 class="step-title">Ejecución Monitoreada</h4>
+                    <p class="step-desc">
+                        Nuestros ingenieros inician la obra. Recibirás reportes semanales con avances fotográficos sin tener que pisar la obra.
+                    </p>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="step-card">
+                    <span class="step-number">04</span>
+                    <h4 class="step-title">Entrega Llave en Mano</h4>
+                    <p class="step-desc">
+                        Auditoría final de calidad y entrega formal de tu inmueble en la fecha pactada. Listo para habitar o rentar.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MÓDULO 6: LLAMADO A LA ACCIÓN FINAL (CTA) -->
+    <section class="cta-section" id="cotizar">
+        <div class="container cta-content">
+            <h2 class="cta-title">¿Listo para asegurar tu patrimonio sin sorpresas?</h2>
+            <p class="cta-desc">
+                Agenda una asesoría técnica sin costo. Analizamos la viabilidad de tu proyecto, los metros cuadrados y te entregamos una proyección clara.
+            </p>
+            <button class="btn-whatsapp-cta" onclick="triggerWhatsApp()">
+                <!-- WhatsApp SVG icon inside -->
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.665.989 3.3.15 5.272.15 5.41-.002 9.814-4.402 9.817-9.813.002-2.622-1.017-5.086-2.87-6.941C16.99 1.01 14.516.02 11.89.022 6.48.024 2.078 4.426 2.075 9.837c-.001 1.97.513 3.894 1.49 5.588L2.53 21.37l6.117-1.604z"/>
+                    <path d="M17.473 14.382c-.301-.15-1.78-.879-2.053-.978-.273-.1-.473-.15-.673.15-.2.3-.775.979-.95 1.178-.173.2-.349.224-.65.074-1.88-.93-3.062-2.43-3.812-3.73-.2-.349-.02-.538.15-.708.15-.15.3-.35.45-.524.15-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.673-1.62-.922-2.206-.24-.582-.48-.5-.672-.51-.173-.008-.372-.01-.572-.01-.2 0-.523.074-.797.373-.273.3-1.045 1.02-1.045 2.487 0 1.468 1.069 2.885 1.218 3.084.15.2 2.101 3.207 5.091 4.5c.71.309 1.266.494 1.7.632.715.228 1.365.195 1.879.118.571-.085 1.78-.727 2.03-1.429.25-.7.25-1.3.175-1.429-.075-.13-.274-.207-.574-.357z"/>
+                </svg>
+                Cotizar mi Proyecto por WhatsApp
+            </button>
+        </div>
+    </section>
+
+    <!-- FOOTER (PIE DE PÁGINA) -->
+    <footer>
+        <div class="container footer-grid">
+            <!-- Columna 1 -->
+            <div class="footer-col">
+                <span class="footer-logo">MOREAL</span>
+                <span class="footer-logo-sub">Desarrollos & Obras</span>
+                <p>
+                    Construcción y remodelación arquitectónica premium con presupuesto cerrado por contrato formal y garantía técnica de ingenieros colegiados.
+                </p>
+            </div>
+            
+            <!-- Columna 2 -->
+            <div class="footer-col">
+                <h5>Contacto</h5>
+                <div class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <span>+593 99 999 9999</span>
+                </div>
+                <div class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <span>contacto@moreal.com.ec</span>
+                </div>
+                <div class="footer-contact-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span>Av. Samborondón, Guayaquil, Ecuador</span>
+                </div>
+            </div>
+
+            <!-- Columna 3 -->
+            <div class="footer-col">
+                <h5>Enlaces Rápidos</h5>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#garantias">Garantías de Obra</a></li>
+                    <li><a href="#trayectoria">Proyectos</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#proceso">Proceso</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Copyright -->
+        <div class="container copyright">
+            <p>© 2026 Moreal. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/593999999999?text=Hola,%20quisiera%20cotizar%20un%20proyecto%20con%20Moreal" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat con WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.665.989 3.3.15 5.272.15 5.41-.002 9.814-4.402 9.817-9.813.002-2.622-1.017-5.086-2.87-6.941C16.99 1.01 14.516.02 11.89.022 6.48.024 2.078 4.426 2.075 9.837c-.001 1.97.513 3.894 1.49 5.588L2.53 21.37l6.117-1.604z"/>
+            <path d="M17.473 14.382c-.301-.15-1.78-.879-2.053-.978-.273-.1-.473-.15-.673.15-.2.3-.775.979-.95 1.178-.173.2-.349.224-.65.074-1.88-.93-3.062-2.43-3.812-3.73-.2-.349-.02-.538.15-.708.15-.15.3-.35.45-.524.15-.174.2-.3.3-.5.1-.2.05-.375-.025-.524-.075-.15-.673-1.62-.922-2.206-.24-.582-.48-.5-.672-.51-.173-.008-.372-.01-.572-.01-.2 0-.523.074-.797.373-.273.3-1.045 1.02-1.045 2.487 0 1.468 1.069 2.885 1.218 3.084.15.2 2.101 3.207 5.091 4.5c.71.309 1.266.494 1.7.632.715.228 1.365.195 1.879.118.571-.085 1.78-.727 2.03-1.429.25-.7.25-1.3.175-1.429-.075-.13-.274-.207-.574-.357z"/>
+        </svg>
+    </a>
+
+    <!-- INTERACCIONES JAVASCRIPT SIMPLES -->
+    <script>
+        // Efecto scroll en el Header de navegación
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Desplazamiento suave al cinturón de confianza
+        function scrollToTrust() {
+            document.getElementById('garantias').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Simulación de acción al presionar el CTA
+        function triggerCTA() {
+            alert('¡Excelente decisión! Iniciando el Cotizador de Proyectos Inteligente de Moreal. (Aquí se abriría tu formulario interactivo tipo Multi-step de 2 minutos).');
+        }
+
+        // Abrir chat de WhatsApp
+        function triggerWhatsApp() {
+            window.open("https://wa.me/593999999999?text=Hola,%20quisiera%20cotizar%20un%20proyecto%20con%20Moreal", "_blank");
+        }
+
+        // Placeholder para menú móvil interactivo
+        function toggleMobileMenu() {
+            alert('Menú de navegación móvil activado.');
+        }
+    </script>
+</body>
+</html>

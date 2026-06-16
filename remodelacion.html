@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moreal | Cotizador de Remodelación con Presupuesto Cerrado</title>
+    <meta name="description" content="Calcula y cotiza la remodelación de tu vivienda con precios fijos garantizados por contrato formal.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. ESTILOS BASE Y VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-primary: #0a0a0a;       /* Negro de fondo */
+            --bg-card: #141414;          /* Negro de la tarjeta */
+            --text-primary: #ffffff;     /* Texto principal */
+            --text-secondary: #8c8c8c;   /* Texto secundario */
+            --accent: #b8860b;           /* Dorado de la marca */
+            --accent-hover: #d4af37;     /* Dorado claro */
+            --accent-glow: rgba(184, 134, 11, 0.2);
+            --border-color: rgba(255, 255, 255, 0.05);
+            
+            --font-serif: 'Playfair Display', Georgia, serif;
+            --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+        }
+
+        body {
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        /* Utilidades */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-accent {
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header-center {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 50px auto;
+        }
+
+        .section-tagline {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 20px;
+            line-height: 1.25;
+            color: var(--text-primary);
+        }
+
+        .section-description {
+            font-size: clamp(14px, 1.5vw, 16px);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           2. BOTÓN DE RETORNO AL INICIO (Top Left)
+           ========================================================================== */
+        .back-to-home {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 10px 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background-color: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+        }
+
+        .back-to-home:hover {
+            color: var(--accent-hover);
+            border-color: var(--accent);
+            background-color: rgba(184, 134, 11, 0.05);
+            transform: translateX(-4px);
+        }
+
+        /* ==========================================================================
+           3. ENCABEZADO PRINCIPAL (HERO SECTION)
+           ========================================================================== */
+        .hero-remodel {
+            position: relative;
+            height: 100vh;
+            min-height: 650px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: var(--bg-primary);
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('remodelacion_bg.png');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+            animation: slowZoom 25s infinite alternate ease-in-out;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg, 
+                rgba(10, 10, 10, 0.95) 0%, 
+                rgba(10, 10, 10, 0.8) 50%, 
+                rgba(10, 10, 10, 0.95) 100%
+            );
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            max-width: 880px;
+            text-align: center;
+            color: var(--text-primary);
+            padding: 0 16px;
+        }
+
+        .hero-tagline {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: clamp(30px, 4.5vw, 54px);
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-description {
+            font-size: clamp(15px, 2vw, 17px);
+            font-weight: 300;
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin: 0 auto 35px auto;
+            line-height: 1.7;
+        }
+
+        /* Cinturón de Mini-Garantías */
+        .mini-garantias {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .garantia-item {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .garantia-item svg {
+            width: 14px;
+            height: 14px;
+            color: var(--accent);
+        }
+
+        /* Botón de Acción Principal del Hero */
+        .btn-hero-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            padding: 18px 40px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-hero-cta:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 12px 35px var(--accent-glow);
+        }
+
+        /* Scroll down arrow */
+        .scroll-down {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .scroll-down:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--accent) 50%, transparent 100%);
+            animation: scrollLineAnimation 2s infinite ease-in-out;
+        }
+
+        /* ==========================================================================
+           4. SECCIÓN INTERMEDIA 1: EL PODER DE LA TRANSFORMACIÓN (PRUEBA SOCIAL)
+           ========================================================================== */
+        .transformation-section {
+            background-color: #111111;
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .transform-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .transform-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transform-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(184, 134, 11, 0.2);
+            box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5);
+        }
+
+        .transform-image-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            overflow: hidden;
+            background-color: #151515;
+        }
+
+        .transform-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .transform-card:hover .transform-image {
+            transform: scale(1.04);
+        }
+
+        .transform-info {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .transform-label-badge {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 5px 12px;
+            border-radius: 4px;
+            background-color: rgba(184, 134, 11, 0.05);
+        }
+
+        .transform-card-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================================================
+           5. SECCIÓN INTERMEDIA 2: GARANTÍA DE INTIMIDAD (MÉTODO CERO ESTRÉS)
+           ========================================================================== */
+        .intimidad-section {
+            background-color: var(--bg-primary);
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            text-align: center;
+            position: relative;
+        }
+
+        .pillars-intimidad-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .pillar-intimidad-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 40px 30px;
+            text-align: left;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .pillar-intimidad-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(184, 134, 11, 0.3);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .pillar-intimidad-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: rgba(184, 134, 11, 0.08);
+            border: 1px solid rgba(184, 134, 11, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            margin-bottom: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .pillar-intimidad-card:hover .pillar-intimidad-icon {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        .pillar-intimidad-title {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .pillar-intimidad-desc {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .btn-intimidad-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            padding: 18px 48px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+            transition: var(--transition-smooth);
+            margin-top: 20px;
+        }
+
+        .btn-intimidad-cta:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 12px 35px var(--accent-glow);
+        }
+
+        /* ==========================================================================
+           6. SECCIÓN DEL FORMULARIO COTIZADOR
+           ========================================================================== */
+        .form-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 0;
+            background-color: var(--bg-primary);
+            position: relative;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 15%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0));
+            z-index: 1;
+        }
+        .form-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 15%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.02), rgba(255,255,255,0));
+            z-index: 1;
+        }
+
+        .cotizador-wrapper {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            max-width: 680px;
+            margin: 0 24px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Barra de Progreso Superior */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 25%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);
+            box-shadow: 0 0 10px var(--accent-glow);
+            transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Cuerpo del Formulario */
+        .form-body {
+            padding: 60px 50px;
+            flex-grow: 1;
+            position: relative;
+            min-height: 460px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Pasos del Formulario */
+        .form-step {
+            display: none;
+            animation: fadeInSlide 0.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .step-header {
+            margin-bottom: 35px;
+        }
+
+        .step-number-indicator {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-family: var(--font-serif);
+            font-size: clamp(20px, 3.5vw, 28px);
+            line-height: 1.3;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        /* Opciones en formato Tarjeta */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            background-color: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-card::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: transparent;
+            border: 1px solid var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+
+        .option-card:hover {
+            border-color: rgba(184, 134, 11, 0.4);
+            color: var(--text-primary);
+            background-color: rgba(255, 255, 255, 0.02);
+            transform: translateX(4px);
+        }
+
+        .option-card.selected {
+            border-color: var(--accent);
+            color: var(--text-primary);
+            background-color: rgba(184, 134, 11, 0.06);
+            box-shadow: 0 0 15px rgba(184, 134, 11, 0.1);
+        }
+
+        .option-card.selected::after {
+            background-color: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        /* Inputs (Paso 4) */
+        .inputs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: inherit;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-label {
+            position: absolute;
+            top: 12px;
+            left: 0;
+            color: var(--text-secondary);
+            pointer-events: none;
+            transition: var(--transition-smooth);
+            font-weight: 300;
+        }
+
+        .form-input:focus ~ .form-label,
+        .form-input:not(:placeholder-shown) ~ .form-label {
+            top: -12px;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Botones de Navegación */
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 24px;
+            margin-top: auto;
+        }
+
+        .btn-nav {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-back {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-back:hover {
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-left: auto;
+        }
+
+        .btn-next:hover {
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 6px 20px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
+            padding: 18px 36px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 6px 20px var(--accent-glow);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 8px 25px var(--accent-glow), 0 0 0 2px rgba(184, 134, 11, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Pantalla de Éxito */
+        .success-screen {
+            display: none;
+            text-align: center;
+            animation: fadeInSlide 0.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .success-icon-container {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(184, 134, 11, 0.08);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            margin: 0 auto 30px auto;
+            box-shadow: 0 0 20px rgba(184, 134, 11, 0.1);
+        }
+
+        .success-icon-container svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .success-title {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .success-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 480px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           7. NUEVAS SECCIONES COMERCIALES (BAJO EL FORMULARIO)
+           ========================================================================== */
+        
+        /* SECCIÓN 1: TESTIMONIOS (PRUEBA SOCIAL DE RESULTADOS) */
+        .testimonials-section {
+            background-color: #111111;
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .testimonial-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 40px 30px;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(184, 134, 11, 0.2);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .stars-container {
+            color: var(--accent);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--accent-hover);
+            margin-top: auto;
+        }
+
+        /* SECCIÓN 2: PREGUNTAS FRECUENTES (ACORDEÓN) */
+        .faq-section {
+            background-color: var(--bg-primary);
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .faq-accordion {
+            max-width: 800px;
+            margin: 50px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .accordion-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .accordion-header {
+            padding: 24px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transition: var(--transition-smooth);
+        }
+
+        .accordion-header:hover {
+            background-color: rgba(255, 255, 255, 0.01);
+        }
+
+        .accordion-item.active {
+            border-color: rgba(184, 134, 11, 0.3);
+        }
+
+        .accordion-item.active .accordion-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .accordion-question {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            padding-right: 20px;
+        }
+
+        .accordion-item.active .accordion-question {
+            color: var(--accent-hover);
+        }
+
+        .accordion-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+            flex-shrink: 0;
+        }
+
+        .accordion-item.active .accordion-icon {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .accordion-answer {
+            padding: 24px 30px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* SECCIÓN 3: AUTORIDAD Y GARANTÍA FINAL */
+        .guarantee-section {
+            background-color: #111111;
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .guarantee-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 50px;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .guarantee-left h3 {
+            font-family: var(--font-serif);
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .guarantee-left p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .guarantee-box {
+            border: 2px double var(--accent);
+            border-radius: 8px;
+            padding: 40px 30px;
+            background-color: rgba(184, 134, 11, 0.03);
+            text-align: center;
+            box-shadow: inset 0 0 20px rgba(184, 134, 11, 0.02);
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+        }
+
+        .guarantee-box:hover {
+            box-shadow: inset 0 0 30px rgba(184, 134, 11, 0.05), 0 8px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-hover);
+        }
+
+        .guarantee-box-title {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .guarantee-box-text {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .btn-bottom-scroll {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, #8b6508 100%);
+            color: var(--text-primary);
+            padding: 20px 48px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid var(--accent);
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--accent-glow);
+            transition: var(--transition-smooth);
+            margin: 0 auto;
+        }
+
+        .btn-bottom-scroll:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            box-shadow: 0 12px 35px var(--accent-glow);
+        }
+
+        .center-btn-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* ==========================================================================
+           8. FOOTER (PIE DE PÁGINA)
+           ========================================================================== */
+        footer {
+            background-color: #050505;
+            padding: 60px 0 30px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h5 {
+            font-family: var(--font-serif);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .footer-logo-sub {
+            font-size: 8px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-top: -6px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .footer-col p {
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 480px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            gap: 32px;
+        }
+
+        .footer-links a {
+            transition: var(--transition-smooth);
+            font-weight: 300;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-hover);
+        }
+
+        .copyright-bar {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 12px;
+            font-weight: 300;
+        }
+
+        /* ==========================================================================
+           9. ANIMACIONES Y RESPONSIVE
+           ========================================================================== */
+        @keyframes slowZoom {
+            0% { transform: scale(1.02); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollLineAnimation {
+            0% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+            51% {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .back-to-home {
+                top: 24px;
+                left: 24px;
+            }
+            .transform-grid {
+                gap: 24px;
+            }
+            .pillars-intimidad-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+            .guarantee-grid {
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 0 12px;
+            }
+
+            .hero-title {
+                margin-bottom: 20px;
+            }
+
+            .hero-description {
+                margin-bottom: 30px;
+            }
+
+            .mini-garantias {
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            .transformation-section, .intimidad-section, .form-section, .testimonials-section, .faq-section, .guarantee-section {
+                padding: 70px 0;
+            }
+
+            .pillar-intimidad-card {
+                padding: 30px 20px;
+            }
+
+            .cotizador-wrapper {
+                margin: 0 16px;
+            }
+
+            .form-body {
+                padding: 40px 24px;
+                min-height: 480px;
+            }
+
+            .option-card {
+                padding: 16px 20px;
+                font-size: 14px;
+            }
+
+            .guarantee-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .copyright-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 580px) {
+            .form-section::before, .form-section::after {
+                display: none;
+            }
+            .transform-grid, .pillars-intimidad-grid, .testimonials-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BOTÓN VOLVER AL INICIO -->
+    <a href="index.html" class="back-to-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver al Inicio
+    </a>
+
+    <!-- ENCABEZADO PRINCIPAL (HERO SECTION) -->
+    <section class="hero-remodel">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        
+        <div class="container hero-content">
+            <p class="hero-tagline">Remodelación Sin Estrés</p>
+            <h1 class="hero-title">
+                Transforma tu Espacio. Revaloriza tu Inmueble. <span class="text-accent">Sin Sobrecostos.</span>
+            </h1>
+            <p class="hero-description">
+                Ejecutamos la remodelación integral de tu hogar respetando tu privacidad. Diseñamos en 3D antes de tocar un muro y garantizamos la obra por contrato a precio fijo. Cero sorpresas a mitad de camino.
+            </p>
+            
+            <!-- Cinturón de Mini-Garantías -->
+            <div class="mini-garantias">
+                <div class="garantia-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Diseño 3D Previo
+                </div>
+                <div class="garantia-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Presupuesto Cerrado
+                </div>
+                <div class="garantia-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Plazos Inamovibles
+                </div>
+            </div>
+
+            <!-- Botón de Acción -->
+            <a href="#formulario-cotizacion" class="btn-hero-cta">
+                Calcular Presupuesto Seguro
+            </a>
+        </div>
+
+        <!-- Flecha de desplazamiento -->
+        <div class="scroll-down" onclick="scrollToForm()">
+            <span>Cotizar</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERMEDIA 1: EL PODER DE LA TRANSFORMACIÓN (PRUEBA SOCIAL) -->
+    <section class="transformation-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tagline">Visualización 3D y Realidad</span>
+                <h2 class="section-title">No imagines el cambio. Vívelo antes de <span class="text-accent">demoler un solo muro.</span></h2>
+                <p class="section-description">
+                    Utilizamos renderización 3D fotorealista para que apruebes cada detalle de tu nuevo santuario. Así eliminamos la incertidumbre y garantizamos que el resultado final sea idéntico a lo que soñaste, respetando el presupuesto al centavo.
+                </p>
+            </div>
+            
+            <div class="transform-grid">
+                <!-- Tarjeta 1: Render Wireframe a Realidad -->
+                <div class="transform-card">
+                    <div class="transform-image-wrapper">
+                        <img src="render_3d_kitchen.png" alt="Cocina render 3D" class="transform-image">
+                    </div>
+                    <div class="transform-info">
+                        <span class="transform-label-badge">Obra entregada sin sobrecostos</span>
+                        <h3 class="transform-card-title">Propuesta de Visualización Interactiva 3D</h3>
+                    </div>
+                </div>
+
+                <!-- Tarjeta 2: Proyecto Finalizado -->
+                <div class="transform-card">
+                    <div class="transform-image-wrapper">
+                        <img src="remodelacion_bg.png" alt="Living Cocina terminada" class="transform-image">
+                    </div>
+                    <div class="transform-info">
+                        <span class="transform-label-badge">Obra entregada sin sobrecostos</span>
+                        <h3 class="transform-card-title">Proyecto Terminado de Cocina y Living</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN INTERMEDIA 2: GARANTÍA DE INTIMIDAD (EL MÉTODO CERO ESTRÉS) -->
+    <section class="intimidad-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tagline">El Método Cero Estrés</span>
+                <h2 class="section-title">Tu casa no es una zona de guerra. Es tu hogar.</h2>
+                <p class="section-description">
+                    Sabemos que el mayor miedo de remodelar es la invasión a tu privacidad. Por eso, blindamos tu tranquilidad con 3 pilares innegociables:
+                </p>
+            </div>
+            
+            <div class="pillars-intimidad-grid">
+                <!-- Pilar 1 -->
+                <div class="pillar-intimidad-card">
+                    <div class="pillar-intimidad-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="pillar-intimidad-title">Limpieza y Respeto</h3>
+                    <p class="pillar-intimidad-desc">
+                        Aislamos el área de trabajo para que el polvo y el ruido no paralicen la vida de tu familia.
+                    </p>
+                </div>
+
+                <!-- Pilar 2 -->
+                <div class="pillar-intimidad-card">
+                    <div class="pillar-intimidad-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="pillar-intimidad-title">Cronograma Blindado</h3>
+                    <p class="pillar-intimidad-desc">
+                        Cada día de retraso es dinero. Firmamos un contrato con fechas de inicio y fin inamovibles.
+                    </p>
+                </div>
+
+                <!-- Pilar 3 -->
+                <div class="pillar-intimidad-card">
+                    <div class="pillar-intimidad-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="pillar-intimidad-title">Un Solo Responsable</h3>
+                    <p class="pillar-intimidad-desc">
+                        Sin lidiar con albañiles informales. Un arquitecto colegiado será tu único contacto 24/7.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Botón de conversión suave -->
+            <a href="#formulario-cotizacion" class="btn-intimidad-cta">
+                Quiero mi Diagnóstico 3D Ahora
+            </a>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DEL FORMULARIO COTIZADOR -->
+    <section class="form-section" id="formulario-cotizacion">
+        <div class="cotizador-wrapper">
+            <!-- Barra de Progreso -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="form-body">
+                <form id="cotizadorForm" onsubmit="handleFormSubmit(event)">
+                    
+                    <!-- PASO 1 -->
+                    <div class="form-step active" id="step1">
+                        <div class="step-header">
+                            <span class="step-number-indicator">Paso 1 de 4</span>
+                            <h2 class="step-title">¿Qué trabajos necesitas hacer en tu vivienda?</h2>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-card" onclick="toggleOption(this, 'step1-val')" data-value="Renovación de pisos/suelos">Renovación de pisos/suelos</div>
+                            <div class="option-card" onclick="toggleOption(this, 'step1-val')" data-value="Reforma de cocina">Reforma de cocina</div>
+                            <div class="option-card" onclick="toggleOption(this, 'step1-val')" data-value="Reforma de baños">Reforma de baños</div>
+                            <div class="option-card" onclick="toggleOption(this, 'step1-val')" data-value="Remodelación integral">Remodelación integral</div>
+                            <div class="option-card" onclick="toggleOption(this, 'step1-val')" data-value="Redistribución de espacios">Redistribución de espacios</div>
+                        </div>
+                        <input type="hidden" id="step1-val" required>
+                    </div>
+
+                    <!-- PASO 2 -->
+                    <div class="form-step" id="step2">
+                        <div class="step-header">
+                            <span class="step-number-indicator">Paso 2 de 4</span>
+                            <h2 class="step-title">¿El profesional podrá visitar la vivienda para hacer un presupuesto exacto?</h2>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-card" onclick="selectSingleOption(this, 'step2-val', true)" data-value="Sí, es mi vivienda">Sí, es mi vivienda</div>
+                            <div class="option-card" onclick="selectSingleOption(this, 'step2-val', true)" data-value="Sí, es una vivienda que quiero comprar">Sí, es una vivienda que quiero comprar</div>
+                            <div class="option-card" onclick="selectSingleOption(this, 'step2-val', true)" data-value="No se puede visitar, solo exploro precios">No se puede visitar, solo exploro precios</div>
+                        </div>
+                        <input type="hidden" id="step2-val" required>
+                    </div>
+
+                    <!-- PASO 3 -->
+                    <div class="form-step" id="step3">
+                        <div class="step-header">
+                            <span class="step-number-indicator">Paso 3 de 4</span>
+                            <h2 class="step-title">¿Cuándo quieres realizar el trabajo?</h2>
+                        </div>
+                        <div class="options-list">
+                            <div class="option-card" onclick="selectSingleOption(this, 'step3-val', true)" data-value="Lo antes posible">Lo antes posible</div>
+                            <div class="option-card" onclick="selectSingleOption(this, 'step3-val', true)" data-value="De 1 a 3 meses">De 1 a 3 meses</div>
+                            <div class="option-card" onclick="selectSingleOption(this, 'step3-val', true)" data-value="Más de 3 meses">Más de 3 meses</div>
+                        </div>
+                        <input type="hidden" id="step3-val" required>
+                    </div>
+
+                    <!-- PASO 4 (DATOS CONTACTO) -->
+                    <div class="form-step" id="step4">
+                        <div class="step-header">
+                            <span class="step-number-indicator">Paso 4 de 4</span>
+                            <h2 class="step-title">¡Último paso! ¿Dónde te enviamos tu propuesta con Presupuesto Cerrado?</h2>
+                        </div>
+                        
+                        <div class="inputs-container">
+                            <div class="form-group">
+                                <input type="text" id="nombre" class="form-input" placeholder=" " required autocomplete="name">
+                                <label for="nombre" class="form-label">Nombre Completo</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" class="form-input" placeholder=" " required autocomplete="email">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="telefono" class="form-input" placeholder=" " required autocomplete="tel">
+                                <label for="telefono" class="form-label">Teléfono móvil</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit">Obtener Presupuesto Seguro</button>
+                    </div>
+
+                    <!-- BOTONES DE NAVEGACIÓN -->
+                    <div class="nav-buttons" id="navButtons">
+                        <button type="button" class="btn-nav btn-back" id="btnBack" onclick="changeStep(-1)" style="display: none;">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Volver
+                        </button>
+                        <button type="button" class="btn-nav btn-next" id="btnNext" onclick="changeStep(1)">
+                            Siguiente
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+
+                </form>
+
+                <!-- PANTALLA DE ÉXITO -->
+                <div class="success-screen" id="successScreen">
+                    <div class="success-icon-container">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <polyline points="9 11 11 13 15 9"/>
+                        </svg>
+                    </div>
+                    <h2 class="success-title">¡Propuesta Solicitada!</h2>
+                    <p class="success-desc">
+                        Hemos recibido tus requerimientos con éxito. En menos de 24 horas, un especialista técnico de Moreal se pondrá en contacto contigo para presentarte tu Presupuesto Cerrado por contrato legal.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 1 DE CIERRE: TESTIMONIOS -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tagline">Historias de Éxito</span>
+                <h2 class="section-title">Historias reales de remodelación sin estrés.</h2>
+            </div>
+            
+            <div class="testimonials-grid">
+                <!-- Testimonio 1 -->
+                <div class="testimonial-card">
+                    <div class="stars-container">★★★★★</div>
+                    <p class="testimonial-text">
+                        "Tenía terror de remodelar por el polvo, pero el equipo aisló todo perfecto. Lo mejor: el precio final fue exactamente el que firmamos."
+                    </p>
+                    <span class="testimonial-author">— María J.</span>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="testimonial-card">
+                    <div class="stars-container">★★★★★</div>
+                    <p class="testimonial-text">
+                        "Mi departamento se revalorizó un 20% tras la remodelación integral. Cumplieron los 45 días de plazo estricto. Un alivio total."
+                    </p>
+                    <span class="testimonial-author">— Carlos M., Inversionista</span>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="testimonial-card">
+                    <div class="stars-container">★★★★★</div>
+                    <p class="testimonial-text">
+                        "Ver el diseño 3D antes me dio mucha paz. No tuve que lidiar con albañiles informales, el arquitecto se encargó de todo."
+                    </p>
+                    <span class="testimonial-author">— Elena R.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 2 DE CIERRE: PREGUNTAS FRECUENTES (FAQ ACORDEÓN) -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tagline">Preguntas Frecuentes</span>
+                <h2 class="section-title">Aclaramos todas tus dudas</h2>
+            </div>
+            
+            <div class="faq-accordion">
+                <!-- FAQ 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-question">¿Qué pasa si encuentran un problema oculto al demoler?</span>
+                        <!-- Down Arrow Icon -->
+                        <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-answer">
+                            Nuestros presupuestos cerrados incluyen márgenes de contingencia calculados por ingenieros. No te pediremos dinero extra a mitad de obra por errores de cálculo.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-question">¿Tengo que mudarme durante la remodelación?</span>
+                        <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-answer">
+                            Depende del alcance, pero en la mayoría de renovaciones por zonas (como cocinas o baños) utilizamos técnicas de aislamiento acústico y barreras de polvo para que sigas habitando tu hogar con la menor interrupción posible.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span class="accordion-question">¿Quién supervisa a los trabajadores en mi casa?</span>
+                        <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-answer">
+                            Un arquitecto colegiado será tu único punto de contacto. Cero interacciones con subcontratistas informales.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN 3 DE CIERRE: AUTORIDAD Y GARANTÍA FINAL -->
+    <section class="guarantee-section">
+        <div class="container">
+            <div class="guarantee-grid">
+                <!-- Columna Izquierda -->
+                <div class="guarantee-left">
+                    <span class="section-tagline">Soporte Técnico</span>
+                    <h3>No somos contratistas improvisados. Somos tu respaldo técnico.</h3>
+                    <p>
+                        +10 años de trayectoria real en el mercado. Diseñamos con precisión milimétrica y trabajamos bajo contrato formal de fianza con firmas legales. Cero sorpresas, cero letras pequeñas.
+                    </p>
+                </div>
+                
+                <!-- Columna Derecha: Recuadro de Garantía -->
+                <div class="guarantee-box">
+                    <span class="guarantee-box-title">Garantía Moreal</span>
+                    <p class="guarantee-box-text">
+                        Si nos pasamos de la fecha de entrega estipulada en el contrato, nosotros asumimos las penalidades por cada día de retraso.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Botón Final de Conversión -->
+            <div class="center-btn-container">
+                <a href="#formulario-cotizacion" class="btn-bottom-scroll">
+                    Subir al Formulario y Cotizar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (PIE DE PÁGINA) -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Columna Izquierda -->
+                <div class="footer-col">
+                    <span class="footer-logo">MOREAL</span>
+                    <span class="footer-logo-sub">Desarrollos & Obras</span>
+                    <p>
+                        Construcción y remodelación arquitectónica premium con presupuesto cerrado por contrato formal y garantía técnica de ingenieros colegiados.
+                    </p>
+                </div>
+                <!-- Columna Derecha -->
+                <div class="footer-col">
+                    <h5>Enlaces Rápidos</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#garantias">Garantías</a></li>
+                        <li><a href="index.html#trayectoria">Proyectos</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="copyright-bar">
+                <span>© 2026 Moreal. Todos los derechos reservados.</span>
+                <span>Construcción y remodelación con presupuesto cerrado.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA DE CONTROL DEL FORMULARIO Y NAVEGACIÓN -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function scrollToForm() {
+            document.getElementById('formulario-cotizacion').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showStep(step) {
+            for (let i = 1; i <= totalSteps; i++) {
+                document.getElementById(`step${i}`).classList.remove('active');
+            }
+            
+            document.getElementById(`step${step}`).classList.add('active');
+
+            const progressPercent = (step / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+            const btnBack = document.getElementById('btnBack');
+            if (step === 1) {
+                btnBack.style.display = 'none';
+            } else {
+                btnBack.style.display = 'inline-flex';
+            }
+
+            const navButtons = document.getElementById('navButtons');
+            if (step === totalSteps) {
+                navButtons.style.display = 'none';
+            } else {
+                navButtons.style.display = 'flex';
+            }
+        }
+
+        function changeStep(direction) {
+            if (direction === 1 && !validateCurrentStep()) {
+                alert("Por favor, selecciona al menos una opción para continuar.");
+                return;
+            }
+
+            currentStep += direction;
+            if (currentStep < 1) currentStep = 1;
+            if (currentStep > totalSteps) currentStep = totalSteps;
+            
+            showStep(currentStep);
+        }
+
+        function toggleOption(card, inputId) {
+            card.classList.toggle('selected');
+            
+            const stepEl = card.closest('.form-step');
+            const selectedCards = stepEl.querySelectorAll('.option-card.selected');
+            const values = Array.from(selectedCards).map(el => el.getAttribute('data-value'));
+            
+            document.getElementById(inputId).value = values.join(', ');
+        }
+
+        function selectSingleOption(card, inputId, autoAdvance = false) {
+            const stepEl = card.closest('.form-step');
+            const allCards = stepEl.querySelectorAll('.option-card');
+            allCards.forEach(c => c.classList.remove('selected'));
+
+            card.classList.add('selected');
+            document.getElementById(inputId).value = card.getAttribute('data-value');
+
+            if (autoAdvance) {
+                setTimeout(() => {
+                    changeStep(1);
+                }, 350);
+            }
+        }
+
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                return document.getElementById('step1-val').value !== '';
+            }
+            if (currentStep === 2) {
+                return document.getElementById('step2-val').value !== '';
+            }
+            if (currentStep === 3) {
+                return document.getElementById('step3-val').value !== '';
+            }
+            return true;
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const telefono = document.getElementById('telefono').value.trim();
+
+            if (!nombre || !email || !telefono) {
+                alert("Por favor, completa todos los campos.");
+                return;
+            }
+
+            document.getElementById('cotizadorForm').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        // LÓGICA DE CONTROL DEL ACORDEÓN DE PREGUNTAS FRECUENTES (FAQ)
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            const content = header.nextElementSibling;
+            const isActive = item.classList.contains('active');
+            
+            // Cerrar todos los demás elementos del acordeón
+            const allItems = document.querySelectorAll('.accordion-item');
+            allItems.forEach(i => {
+                i.classList.remove('active');
+                i.querySelector('.accordion-content').style.maxHeight = null;
+            });
+            
+            // Activar/desactivar el elemento actual
+            if (!isActive) {
+                item.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        }
+    </script>
+
+</body>
+</html>
