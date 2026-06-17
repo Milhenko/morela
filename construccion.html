@@ -160,8 +160,41 @@
         .whatsapp-float svg{width:28px;height:28px;fill:#fff;}
 
         /* RESPONSIVE */
-        @media(max-width:900px){.pilares-grid{grid-template-columns:repeat(2,1fr);}.options-grid.cols-2{grid-template-columns:1fr;}}
-        @media(max-width:640px){.topbar{padding:14px 20px;}.topbar-cta{display:none;}.pilares-grid{grid-template-columns:1fr;}.hero-stats{gap:28px;}.trust-strip-inner{gap:24px;}.footer-inner{flex-direction:column;align-items:flex-start;}.whatsapp-float{bottom:20px;right:20px;}}
+        @media(max-width:900px){
+            .pilares-grid{grid-template-columns:repeat(2,1fr);}
+            .options-grid.cols-2{grid-template-columns:1fr;}
+            .garantia,.formulario-section{padding:80px 0;}
+            .hero-blueprint{width:100%;opacity:.04;}
+        }
+        @media(max-width:640px){
+            .container{padding:0 20px;}
+            .topbar{padding:14px 20px;}
+            .topbar-cta{display:none;}
+            .topbar-brand{font-size:1rem;}
+            .hero-content{padding-top:120px;}
+            .hero-subtitle{margin-bottom:36px;}
+            .hero-actions{gap:16px;}
+            .btn-primary{width:100%;justify-content:center;}
+            .hero-trust{justify-content:center;width:100%;}
+            .pilares-grid{grid-template-columns:1fr;}
+            .pilar-card{padding:36px 28px;}
+            .hero-stats{gap:28px;margin-top:48px;}
+            .progress-bar-wrap{margin-bottom:44px;}
+            .form-step .step-question{margin-bottom:10px;}
+            .option-card{padding:18px 20px;}
+            .trust-strip-inner{gap:24px;}
+            .footer-inner{flex-direction:column;align-items:flex-start;}
+            .whatsapp-float{bottom:20px;right:20px;width:52px;height:52px;}
+            .whatsapp-float svg{width:25px;height:25px;}
+        }
+        @media(max-width:460px){
+            .hero-stats{flex-direction:column;gap:22px;}
+            .option-card{gap:12px;}
+            .option-text{font-size:.92rem;}
+            .btn-next,.btn-submit{width:100%;justify-content:center;}
+            .success-screen{padding:48px 24px;}
+            .footer-links{gap:18px 22px;}
+        }
     </style>
 </head>
 <body>

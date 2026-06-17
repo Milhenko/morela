@@ -174,6 +174,84 @@
             transition: var(--transition-smooth);
         }
 
+        /* Hamburguesa -> X cuando está abierto */
+        .nav-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Menú móvil desplegable */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+            padding: 96px 24px 36px;
+            transform: translateY(-100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, visibility 0.35s;
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 24px;
+        }
+
+        .mobile-menu ul a {
+            display: block;
+            padding: 15px 8px;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-menu ul a:hover {
+            color: var(--accent);
+            padding-left: 16px;
+        }
+
+        .mobile-menu .nav-cta-mobile {
+            display: block;
+            text-align: center;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: 1px solid var(--accent);
+            padding: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .mobile-menu .nav-cta-mobile:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 18px var(--accent-glow);
+        }
+
+        body.menu-open {
+            overflow: hidden;
+        }
+
         /* ==========================================================================
            3. MÓDULO 1: HERO SECTION
            ========================================================================== */
@@ -1211,6 +1289,18 @@
         </div>
     </header>
 
+    <!-- MENÚ MÓVIL DESPLEGABLE -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#inicio" onclick="closeMobileMenu()">Inicio</a></li>
+            <li><a href="#garantias" onclick="closeMobileMenu()">Garantías de Obra</a></li>
+            <li><a href="#trayectoria" onclick="closeMobileMenu()">Proyectos</a></li>
+            <li><a href="#servicios" onclick="closeMobileMenu()">Servicios</a></li>
+            <li><a href="#proceso" onclick="closeMobileMenu()">Proceso</a></li>
+        </ul>
+        <a href="#servicios" class="nav-cta-mobile" onclick="closeMobileMenu()">Cotizar Ahora</a>
+    </div>
+
     <!-- MÓDULO 1: HERO SECTION -->
     <section class="hero" id="inicio">
         <!-- Imagen de fondo animada en escala -->
@@ -1622,7 +1712,17 @@
 
         // Placeholder para menú móvil interactivo
         function toggleMobileMenu() {
-            alert('Menú de navegación móvil activado.');
+            const menu = document.getElementById('mobileMenu');
+            const toggle = document.querySelector('.nav-toggle');
+            menu.classList.toggle('open');
+            toggle.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.querySelector('.nav-toggle').classList.remove('active');
+            document.body.classList.remove('menu-open');
         }
     </script>
 </body>
