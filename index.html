@@ -830,6 +830,41 @@
             border-color: var(--accent);
         }
 
+        /* Botón de Instagram (portafolio) */
+        .portfolio-cta {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .btn-instagram {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(95deg, #833ab4 0%, #c13584 45%, #e1306c 70%, #f77737 100%);
+            box-shadow: 0 8px 28px rgba(193, 53, 132, 0.28);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-instagram:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 38px rgba(193, 53, 132, 0.45);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-instagram svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* ==========================================================================
            7. MÓDULO 5: NUESTRO PROCESO TRANSPARENTE
            ========================================================================== */
@@ -1473,6 +1508,70 @@
                     </div>
                 </div>
 
+                <!-- Tarjeta Proyecto 4 -->
+                <!-- TEMP: reemplazar src por foto real -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="remodelacion_bg.png" alt="Proyecto Moreal" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Proyecto 4 (editable)</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Proyecto 5 -->
+                <!-- TEMP: reemplazar src por foto real -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="render_3d_kitchen.png" alt="Proyecto Moreal" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Proyecto 5 (editable)</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Proyecto 6 -->
+                <!-- TEMP: reemplazar src por foto real -->
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="hero_background.png" alt="Proyecto Moreal" class="project-image">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-info">
+                        <h3 class="project-card-title">Proyecto 6 (editable)</h3>
+                        <div class="project-badges">
+                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Presupuesto Cerrado</span>
+                        </div>
+                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Botón Ver más en Instagram -->
+            <div class="portfolio-cta">
+                <!-- TEMP: reemplazar href por el link real de Instagram -->
+                <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn-instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    Ver más en Instagram
+                </a>
             </div>
         </div>
     </section>

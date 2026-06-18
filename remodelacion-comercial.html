@@ -1038,6 +1038,96 @@
             width: 100%;
         }
 
+        /* SECCIÓN PORTAFOLIO (GALERÍA + INSTAGRAM) */
+        .portfolio-section {
+            background-color: #111111;
+            padding: 100px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            position: relative;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .portfolio-item {
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: #151515;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.06);
+        }
+
+        .portfolio-caption {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 36px 20px 16px;
+            background: linear-gradient(to top, rgba(10, 10, 10, 0.92), transparent);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+            transform: translateY(8px);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .portfolio-item:hover .portfolio-caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .portfolio-cta {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .btn-instagram {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 36px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(95deg, #833ab4 0%, #c13584 45%, #e1306c 70%, #f77737 100%);
+            box-shadow: 0 8px 28px rgba(193, 53, 132, 0.28);
+            transition: var(--transition-smooth);
+        }
+
+        .btn-instagram:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 38px rgba(193, 53, 132, 0.45);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .btn-instagram svg {
+            width: 20px;
+            height: 20px;
+        }
+
         /* ==========================================================================
            8. FOOTER (PIE DE PÁGINA)
            ========================================================================== */
@@ -1172,6 +1262,9 @@
                 grid-template-columns: repeat(2, 1fr);
                 gap: 24px;
             }
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
             .guarantee-grid {
                 gap: 30px;
             }
@@ -1242,7 +1335,7 @@
             .form-section::before, .form-section::after {
                 display: none;
             }
-            .transform-grid, .pillars-intimidad-grid, .testimonials-grid {
+            .transform-grid, .pillars-intimidad-grid, .testimonials-grid, .portfolio-grid {
                 grid-template-columns: 1fr;
                 gap: 24px;
             }
@@ -1645,6 +1738,60 @@
             <div class="center-btn-container">
                 <a href="#formulario-cotizacion" class="btn-bottom-scroll">
                     Subir al Formulario y Cotizar
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN PORTAFOLIO (GALERÍA + INSTAGRAM) -->
+    <section class="portfolio-section">
+        <div class="container">
+            <div class="section-header-center">
+                <span class="section-tagline">Nuestro Portafolio</span>
+                <h2 class="section-title">Locales y oficinas que <span class="text-accent">venden por sí solos.</span></h2>
+                <p class="section-description">
+                    Una muestra de negocios que renovamos sin frenar su operación. Reemplaza estas imágenes por las fotos reales de tus obras comerciales.
+                </p>
+            </div>
+
+            <!-- TEMP: reemplaza cada src por tu foto real y edita el texto del caption -->
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="project_2.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 1 — Local / Showroom (editable)</div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="render_3d_kitchen.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 2 (editable)</div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="project_1.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 3 (editable)</div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="project_3.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 4 (editable)</div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="remodelacion_bg.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 5 (editable)</div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="hero_background.png" alt="Remodelación comercial Moreal">
+                    <div class="portfolio-caption">Proyecto 6 (editable)</div>
+                </div>
+            </div>
+
+            <!-- Botón Ver más en Instagram -->
+            <div class="portfolio-cta">
+                <!-- TEMP: reemplazar href por el link real de Instagram -->
+                <a href="https://instagram.com/" target="_blank" rel="noopener" class="btn-instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    Ver más en Instagram
                 </a>
             </div>
         </div>
