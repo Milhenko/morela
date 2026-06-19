@@ -507,6 +507,21 @@
     <script>
         const formState = { currentStep: 1, totalSteps: 4, answers: {} };
 
+        /* ===== Conexión con el CRM (Google Sheet vía Apps Script) ===== */
+        const CRM_ENDPOINT = ""; /* <-- PEGA AQUÍ la URL /exec de tu Apps Script */
+
+        function sendToCRM(payload) {
+            if (!CRM_ENDPOINT) return; /* aún no configurado: el formulario sigue funcionando */
+            try {
+                fetch(CRM_ENDPOINT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) { /* no bloquear la experiencia del usuario */ }
+        }
+
         function updateProgress(step) {
             const pct = (step / formState.totalSteps) * 100;
             document.getElementById('progress-fill').style.width = pct + '%';
@@ -548,6 +563,18 @@
             formState.answers.nombre = nombre;
             formState.answers.email = email;
             formState.answers.whatsapp = whatsapp;
+
+            sendToCRM({
+                fecha: new Date().toISOString(),
+                origen: 'Construcción desde Cero',
+                paso1: formState.answers.step1 || '',
+                paso2: formState.answers.step2 || '',
+                paso3: formState.answers.step3 || '',
+                nombre: nombre,
+                email: email,
+                telefono: whatsapp
+            });
+
             document.getElementById('step-4').classList.remove('active');
             document.getElementById('success-screen').classList.add('active');
             document.getElementById('progress-fill').style.width = '100%';

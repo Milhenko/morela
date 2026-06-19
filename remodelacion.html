@@ -1833,6 +1833,21 @@
         let currentStep = 1;
         const totalSteps = 4;
 
+        /* ===== Conexión con el CRM (Google Sheet vía Apps Script) ===== */
+        const CRM_ENDPOINT = ""; /* <-- PEGA AQUÍ la URL /exec de tu Apps Script */
+
+        function sendToCRM(payload) {
+            if (!CRM_ENDPOINT) return; /* aún no configurado: el formulario sigue funcionando */
+            try {
+                fetch(CRM_ENDPOINT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) { /* no bloquear la experiencia del usuario */ }
+        }
+
         function scrollToForm() {
             document.getElementById('formulario-cotizacion').scrollIntoView({ behavior: 'smooth' });
         }
@@ -1924,6 +1939,17 @@
                 alert("Por favor, completa todos los campos.");
                 return;
             }
+
+            sendToCRM({
+                fecha: new Date().toISOString(),
+                origen: 'Remodelación Residencial',
+                paso1: document.getElementById('step1-val').value,
+                paso2: document.getElementById('step2-val').value,
+                paso3: document.getElementById('step3-val').value,
+                nombre: nombre,
+                email: email,
+                telefono: telefono
+            });
 
             document.getElementById('cotizadorForm').style.display = 'none';
             document.getElementById('successScreen').style.display = 'block';
