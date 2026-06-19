@@ -1834,7 +1834,7 @@
         const totalSteps = 4;
 
         /* ===== Conexión con el CRM (Google Sheet vía Apps Script) ===== */
-        const CRM_ENDPOINT = ""; /* <-- PEGA AQUÍ la URL /exec de tu Apps Script */
+        const CRM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwFnOg_Wlp9ynChkvcA56p6-acOXPALXZjz15_6ECzRQhVTxQcoupBb5Gj4I2gzVNJy/exec"; /* <-- PEGA AQUÍ la URL /exec de tu Apps Script */
 
         function sendToCRM(payload) {
             if (!CRM_ENDPOINT) return; /* aún no configurado: el formulario sigue funcionando */
