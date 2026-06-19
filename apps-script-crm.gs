@@ -1,60 +1,50 @@
 /**
  * ============================================================================
- *  MOREAL — Conector formularios web -> Google Sheet (pestaña SEPARADA)
+ *  MOREAL — Conector de formularios web -> Google Sheet (CRM AppSheet)
  * ============================================================================
  *
- *  ⚠️⚠️  LEER ANTES DE TOCAR NADA  ⚠️⚠️
+ *  QUÉ HACE:
+ *  Recibe los leads de las landing pages (construcción, remodelación
+ *  residencial y comercial) y los agrega como filas en una pestaña del
+ *  Google Sheet que tu app de AppSheet usa como fuente de datos.
+ *  AppSheet sincroniza esa hoja, así que el lead aparece en tu CRM solo.
  *
- *  NO pegues esto en  Extensiones > Apps Script  de tu hoja.
- *  Ese proyecto ya contiene el código que recibe Meta y dispara Twilio.
- *  NO lo borres ni lo modifiques.
- *
- *  Este script va en un proyecto de Apps Script *NUEVO E INDEPENDIENTE*.
- *  Razones:
- *   - En un mismo proyecto solo puede haber UN doPost; el tuyo (Meta/Twilio)
- *     se rompería. Un proyecto separado evita ese choque.
- *   - Los leads de la web caen en una pestaña aparte ("Leads_Web") que tu
- *     automatización de Twilio NO vigila  ->  esos leads NO reciben el
- *     mensaje automático (que es justo lo que pediste).
+ *  (La hoja de Moreal está limpia — Twilio aún no está configurado aquí —,
+ *   por eso usamos el camino simple: el Apps Script de la propia hoja.)
  *
  *  ----------------------------------------------------------------------------
  *  INSTALACIÓN (una sola vez):
  *  ----------------------------------------------------------------------------
- *  1. Entra a  https://script.google.com  y crea un  PROYECTO NUEVO
- *     (botón "Nuevo proyecto"). NO uses el editor de tu hoja.
- *  2. Borra el código de ejemplo y pega TODO este archivo.
- *  3. Pon abajo tu SPREADSHEET_ID: está en la URL de tu Google Sheet,
- *     entre  /d/  y  /edit :
- *        docs.google.com/spreadsheets/d/ESTE_ES_EL_ID/edit
- *  4. Guarda (disquete).
- *  5. Implementar > Nueva implementación:
+ *  1. Abre el Google Sheet que respalda tu CRM de AppSheet (el de Moreal).
+ *  2. Menú  Extensiones > Apps Script.
+ *  3. Borra el código de ejemplo y pega TODO este archivo.
+ *  4. Si quieres, cambia SHEET_NAME por la pestaña destino. Si no existe,
+ *     el script la crea sola con sus encabezados.
+ *  5. Guarda (disquete).
+ *  6. Botón  Implementar > Nueva implementación:
  *        - Tipo:  Aplicación web
- *        - Ejecutar como:  Yo (tu cuenta)
+ *        - Ejecutar como:  Yo
  *        - Quién tiene acceso:  Cualquier persona
  *     Implementar  ->  Autoriza con tu cuenta de Google.
- *  6. Copia la "URL de la aplicación web" (termina en /exec).
- *  7. Pásale esa URL a Claude (o pégala en la constante CRM_ENDPOINT de los
- *     3 archivos .html).
+ *  7. Copia la "URL de la aplicación web" (termina en /exec) y pásasela
+ *     a Claude (o pégala en la constante CRM_ENDPOINT de los 3 .html).
  *
- *  ----------------------------------------------------------------------------
- *  En AppSheet: agrega la pestaña "Leads_Web" como tabla nueva
- *  (Data > Add Table) para ver los leads de la web en tu CRM, separados
- *  de los de Meta.
+ *  Cada vez que CAMBIES este código:  Implementar > Administrar
+ *  implementaciones > editar (lápiz) > Versión: Nueva, para que la URL
+ *  sirva la versión nueva.
  *
- *  NOTA DE SEGURIDAD: para garantizar que Twilio NO escriba a los leads web,
- *  tu automatización actual debe filtrar por la pestaña de Meta (no actuar
- *  sobre "Leads_Web"). Lo confirmamos con un lead de prueba al terminar.
+ *  En AppSheet: si la pestaña "Leads_Web" es nueva, agrégala como tabla
+ *  (Data > Add Table) para verla en tu CRM.
  * ============================================================================
  */
 
-const SPREADSHEET_ID = 'PEGA_AQUI_EL_ID_DE_TU_HOJA';
 const SHEET_NAME = 'Leads_Web';
 const HEADERS = ['Fecha', 'Origen', 'Paso1', 'Paso2', 'Paso3', 'Nombre', 'Email', 'Telefono'];
 
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
     let sheet = ss.getSheetByName(SHEET_NAME);
 
     if (!sheet) {
