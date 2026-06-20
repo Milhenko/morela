@@ -69,8 +69,12 @@ function valueForHeader(header, data, newId) {
     case 'Detalle_1':         return data.detalle1 || data.paso1 || '';
     case 'Detalle_2':         return data.detalle2 || data.paso2 || '';
     case 'Detalle_3':         return data.detalle3 || data.paso3 || '';
+    case 'utm_source':        return data.utm_source || '';
+    case 'utm_medium':        return data.utm_medium || '';
     case 'utm_campaign':      return data.utm_campaign || '';
+    case 'utm_term':          return data.utm_term || '';
     case 'utm_content':       return data.utm_content || '';
+    case 'Mensaje_Web':       return data.mensaje || '';
     /* Segmento y Calificación_Lead los completa el asesor -> quedan vacíos */
     default:                  return '';
   }
