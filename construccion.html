@@ -522,6 +522,18 @@
             } catch (e) { /* no bloquear la experiencia del usuario */ }
         }
 
+        /* Captura los parámetros UTM de la URL (atribución de pauta) */
+        function getUTMs() {
+            const p = new URLSearchParams(window.location.search);
+            return {
+                utm_source: p.get('utm_source') || '',
+                utm_medium: p.get('utm_medium') || '',
+                utm_campaign: p.get('utm_campaign') || '',
+                utm_content: p.get('utm_content') || '',
+                utm_term: p.get('utm_term') || ''
+            };
+        }
+
         function updateProgress(step) {
             const pct = (step / formState.totalSteps) * 100;
             document.getElementById('progress-fill').style.width = pct + '%';
@@ -564,16 +576,16 @@
             formState.answers.email = email;
             formState.answers.whatsapp = whatsapp;
 
-            sendToCRM({
+            sendToCRM(Object.assign({
                 fecha: new Date().toISOString(),
-                origen: 'Construcción desde Cero',
+                origen: 'Construcción',
                 paso1: formState.answers.step1 || '',
                 paso2: formState.answers.step2 || '',
                 paso3: formState.answers.step3 || '',
                 nombre: nombre,
                 email: email,
                 telefono: whatsapp
-            });
+            }, getUTMs()));
 
             document.getElementById('step-4').classList.remove('active');
             document.getElementById('success-screen').classList.add('active');
