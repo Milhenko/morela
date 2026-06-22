@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moreal | Cotizador de Obra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f3f1; --surface:#ffffff; --ink:#141414; --muted:#6b6b6b;
+    --line:rgba(0,0,0,.10); --line-soft:rgba(0,0,0,.06);
+    --accent:#1f1f1f; --accent-soft:rgba(0,0,0,.04);
+    --danger:#b3261e;
+    --serif:'Playfair Display',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:24px 20px 120px;}
+
+  /* Barra superior (no se imprime) */
+  .toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:rgba(244,243,241,.9);backdrop-filter:blur(10px);padding:12px 0;margin-bottom:18px;border-bottom:1px solid var(--line);}
+  .brand{display:flex;flex-direction:column;line-height:1;}
+  .brand b{font-family:var(--serif);font-size:22px;letter-spacing:3px;}
+  .brand span{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+    font:600 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:6px;cursor:pointer;transition:.2s;}
+  .btn:hover{background:var(--ink);color:#fff;}
+  .btn.solid{background:var(--ink);color:#fff;}
+  .btn.solid:hover{opacity:.85;}
+  .btn.wa{background:#25D366;border-color:#25D366;color:#fff;}
+  .btn.wa:hover{opacity:.9;background:#25D366;color:#fff;}
+  .btn.ghost{border-color:var(--line);color:var(--muted);}
+  .btn.ghost:hover{background:var(--accent-soft);color:var(--ink);border-color:var(--ink);}
+  .btn svg{width:15px;height:15px;}
+
+  /* Documento */
+  .doc{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.05);overflow:hidden;}
+  .doc-head{padding:32px 34px 24px;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+  .doc-head .title{font-family:var(--serif);font-size:30px;font-weight:700;}
+  .doc-head .title small{display:block;font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .doc-logo{text-align:right;}
+  .doc-logo b{font-family:var(--serif);font-size:24px;letter-spacing:3px;display:block;}
+  .doc-logo span{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);}
+
+  .meta{padding:22px 34px;display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px;border-bottom:1px solid var(--line-soft);}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field.full{grid-column:1 / -1;}
+  .field label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .field input,.field textarea{font:400 14px/1.4 var(--sans);color:var(--ink);border:none;border-bottom:1px solid var(--line);background:transparent;padding:6px 2px;width:100%;resize:vertical;}
+  .field input:focus,.field textarea:focus{outline:none;border-bottom-color:var(--ink);}
+
+  /* Tabla de rubros */
+  .body{padding:14px 34px 8px;}
+  .cap{margin:20px 0;border:1px solid var(--line-soft);border-radius:8px;overflow:hidden;}
+  .cap-head{display:flex;align-items:center;gap:10px;background:var(--accent-soft);padding:10px 12px;border-bottom:1px solid var(--line-soft);}
+  .cap-num{font-weight:800;font-size:13px;min-width:22px;color:var(--muted);}
+  .cap-head input{flex:1;font:700 13px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;border:none;background:transparent;color:var(--ink);}
+  .cap-head input:focus{outline:none;}
+  .cap-total{font-weight:700;font-size:13px;white-space:nowrap;}
+  .rows{width:100%;border-collapse:collapse;}
+  .rows th{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 8px;border-bottom:1px solid var(--line-soft);}
+  .rows td{padding:4px 6px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  .rows th.num,.rows td.num{text-align:right;}
+  .rows th.ctr,.rows td.ctr{text-align:center;}
+  .rows textarea,.rows input,.rows select{width:100%;border:none;background:transparent;font:400 13px/1.4 var(--sans);color:var(--ink);padding:5px 4px;}
+  .rows textarea{resize:vertical;min-height:34px;}
+  .rows input.num{text-align:right;}
+  .rows input:focus,.rows textarea:focus,.rows select:focus{outline:none;background:var(--accent-soft);border-radius:4px;}
+  .rows .pu,.rows .qty{max-width:90px;}
+  .rows .rt{font-weight:600;white-space:nowrap;}
+  .col-x{width:30px;}
+  .rmrow,.rmcap{border:none;background:transparent;color:#c9c4bd;cursor:pointer;font-size:16px;line-height:1;padding:4px;border-radius:4px;}
+  .rmrow:hover,.rmcap:hover{color:var(--danger);background:rgba(179,38,30,.08);}
+  .addrow{margin:8px 10px 12px;}
+  .mini{font:600 11px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);background:transparent;padding:8px 12px;border-radius:6px;cursor:pointer;}
+  .mini:hover{border-color:var(--ink);color:var(--ink);}
+
+  /* Totales */
+  .totals{padding:18px 34px 26px;display:flex;justify-content:flex-end;}
+  .totals-box{width:340px;max-width:100%;}
+  .trow{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid var(--line-soft);}
+  .trow.grand{border-top:2px solid var(--ink);border-bottom:none;margin-top:6px;padding-top:12px;font-family:var(--serif);font-size:22px;font-weight:700;}
+  .trow .iva-in{display:flex;align-items:center;gap:6px;color:var(--muted);}
+  .trow .iva-in input{width:48px;border:1px solid var(--line);border-radius:4px;padding:3px 5px;text-align:right;font:inherit;}
+
+  /* Forma de pago */
+  .pay{padding:8px 34px 30px;}
+  .pay h3{font-family:var(--serif);font-size:18px;margin-bottom:4px;}
+  .pay .hint{font-size:12px;color:var(--muted);margin-bottom:12px;}
+  .pay table{width:100%;border-collapse:collapse;}
+  .pay th{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:1px solid var(--line-soft);}
+  .pay th.num{text-align:right;} .pay td.num{text-align:right;}
+  .pay td{padding:3px 6px;border-bottom:1px solid var(--line-soft);}
+  .pay input{width:100%;border:none;background:transparent;font:400 13px/1.4 var(--sans);padding:6px 4px;}
+  .pay input:focus{outline:none;background:var(--accent-soft);border-radius:4px;}
+  .pay input.num{text-align:right;}
+  .pay-check{margin-top:10px;font-size:12px;font-weight:600;}
+  .pay-check.ok{color:#1d7a46;} .pay-check.bad{color:var(--danger);}
+
+  .foot-note{padding:0 34px 34px;font-size:11px;color:var(--muted);line-height:1.7;}
+  .foot-note textarea{width:100%;border:1px solid var(--line-soft);border-radius:8px;padding:12px;font:inherit;color:var(--ink);resize:vertical;min-height:70px;}
+
+  @media(max-width:640px){
+    .meta{grid-template-columns:1fr;} .doc-head,.meta,.body,.totals,.pay,.foot-note{padding-left:18px;padding-right:18px;}
+    .rows .desc-th{min-width:160px;}
+  }
+
+  /* ===== Impresión / PDF ===== */
+  @media print{
+    @page{margin:14mm;}
+    body{background:#fff;}
+    .wrap{padding:0;max-width:none;}
+    .toolbar,.no-print{display:none !important;}
+    .doc{border:none;box-shadow:none;border-radius:0;}
+    .cap{break-inside:avoid;}
+    .addrow,.mini,.rmrow,.rmcap,.col-x{display:none !important;}
+    .field input,.field textarea,.rows input,.rows textarea,.rows select,.pay input,.cap-head input,.foot-note textarea{
+      border:none !important;background:transparent !important;}
+    textarea{overflow:visible;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- BARRA (no imprime) -->
+  <div class="toolbar no-print">
+    <div class="brand"><b>MOREAL</b><span>Desarrollos &amp; Obras</span></div>
+    <div class="actions">
+      <button class="btn ghost" onclick="loadEjemplo()">Cargar ejemplo</button>
+      <button class="btn ghost" onclick="resetDoc()">Limpiar</button>
+      <button class="btn wa" onclick="enviarWhatsApp()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.407.001 12.017.001c3.207.001 6.22 1.25 8.485 3.515 2.266 2.266 3.514 5.28 3.513 8.486-.003 6.611-5.35 11.961-11.957 11.961a11.95 11.95 0 0 1-5.728-1.456L.057 24z"/></svg>
+        WhatsApp</button>
+      <button class="btn solid" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimir / PDF</button>
+    </div>
+  </div>
+
+  <!-- DOCUMENTO -->
+  <div class="doc">
+    <div class="doc-head">
+      <div class="title"><small>Cotización de Obra</small><span id="t-proyecto">Nueva cotización</span></div>
+      <div class="doc-logo"><b>MOREAL</b><span>Desarrollos &amp; Obras</span></div>
+    </div>
+
+    <div class="meta">
+      <div class="field"><label>Proyecto</label><input id="proyecto" placeholder="Ej: Casa CC — La Brisa" oninput="syncTitulo()"></div>
+      <div class="field"><label>Cliente</label><input id="cliente" placeholder="Nombre del cliente"></div>
+      <div class="field full"><label>Descripción general</label><input id="descripcion" placeholder="Ej: Remodelación residencial de cocina y patio"></div>
+      <div class="field"><label>Dirección / Ubicación</label><input id="direccion" placeholder="Urb., etapa, mz, villa"></div>
+      <div class="field"><label>N° de oferta</label><input id="oferta" placeholder="001"></div>
+      <div class="field"><label>Fecha</label><input id="fecha" type="date"></div>
+      <div class="field"><label>Validez de la oferta</label><input id="validez" placeholder="15 días"></div>
+    </div>
+
+    <!-- CAPÍTULOS -->
+    <div class="body" id="caps"></div>
+    <div class="no-print" style="padding:0 34px 8px;">
+      <button class="mini" onclick="addCap()">+ Agregar capítulo</button>
+    </div>
+
+    <!-- TOTALES -->
+    <div class="totals">
+      <div class="totals-box">
+        <div class="trow"><span>Subtotal</span><span id="t-subtotal">$0.00</span></div>
+        <div class="trow">
+          <span class="iva-in">IVA <input id="ivaPct" type="number" min="0" max="100" step="0.5" value="0" oninput="recalc()">%</span>
+          <span id="t-iva">$0.00</span>
+        </div>
+        <div class="trow grand"><span>Total</span><span id="t-total">$0.00</span></div>
+      </div>
+    </div>
+
+    <!-- FORMA DE PAGO -->
+    <div class="pay">
+      <h3>Forma de pago</h3>
+      <p class="hint no-print">Agrega los hitos de pago (anticipo, avances, pago final). Deben sumar el total.</p>
+      <table>
+        <thead><tr><th>Concepto</th><th>Fecha</th><th class="num">Valor</th><th class="col-x no-print"></th></tr></thead>
+        <tbody id="pagos"></tbody>
+      </table>
+      <button class="mini no-print" style="margin-top:10px" onclick="addPago()">+ Agregar pago</button>
+      <div class="pay-check" id="pay-check"></div>
+    </div>
+
+    <!-- NOTAS -->
+    <div class="foot-note">
+      <textarea id="notas" placeholder="Notas / condiciones (ej: precios no incluyen IVA salvo indicación; cualquier trabajo adicional se cotiza por separado; garantía de obra...).">Los valores incluyen materiales, mano de obra y equipos según el alcance descrito. Trabajos adicionales fuera del alcance se cotizan por separado. Presupuesto cerrado por contrato.</textarea>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ===== Estado =====
+  let state = { capitulos: [], pagos: [] };
+  const money = n => new Intl.NumberFormat('es-EC',{style:'currency',currency:'USD'}).format(isFinite(n)?n:0);
+  const uid = () => Math.random().toString(36).slice(2,9);
+  const UNIDADES = ['GLB','M2','ML','M3','UNIDAD','U','KG','SACO','DÍA','PUNTO','%'];
+
+  function syncTitulo(){ document.getElementById('t-proyecto').textContent = document.getElementById('proyecto').value || 'Nueva cotización'; }
+
+  // ===== Render =====
+  function render(){
+    const caps = document.getElementById('caps');
+    caps.innerHTML = '';
+    state.capitulos.forEach((cap, ci) => {
+      const subtotal = cap.partidas.reduce((s,p)=>s + (num(p.cantidad)*num(p.pu)), 0);
+      const el = document.createElement('div');
+      el.className = 'cap';
+      el.innerHTML = `
+        <div class="cap-head">
+          <span class="cap-num">${ci+1}</span>
+          <input value="${esc(cap.nombre)}" placeholder="NOMBRE DEL CAPÍTULO" oninput="setCap(${ci},this.value)">
+          <span class="cap-total">${money(subtotal)}</span>
+          <button class="rmcap no-print" title="Eliminar capítulo" onclick="rmCap(${ci})">✕</button>
+        </div>
+        <table class="rows">
+          <thead><tr>
+            <th class="desc-th">Descripción</th>
+            <th class="ctr" style="width:80px">Unidad</th>
+            <th class="num" style="width:80px">Cant.</th>
+            <th class="num" style="width:90px">P.U.</th>
+            <th class="num" style="width:100px">Total</th>
+            <th class="col-x no-print"></th>
+          </tr></thead>
+          <tbody>
+            ${cap.partidas.map((p,pi)=>`
+              <tr>
+                <td><textarea rows="1" placeholder="Descripción del rubro" oninput="setP(${ci},${pi},'descripcion',this.value);autoGrow(this)">${esc(p.descripcion)}</textarea></td>
+                <td class="ctr">
+                  <select onchange="setP(${ci},${pi},'unidad',this.value)">
+                    ${UNIDADES.map(u=>`<option ${p.unidad===u?'selected':''}>${u}</option>`).join('')}
+                  </select>
+                </td>
+                <td class="num"><input class="num qty" type="text" inputmode="decimal" value="${esc(p.cantidad)}" oninput="setP(${ci},${pi},'cantidad',this.value)"></td>
+                <td class="num"><input class="num pu" type="text" inputmode="decimal" value="${esc(p.pu)}" oninput="setP(${ci},${pi},'pu',this.value)"></td>
+                <td class="num rt">${money(num(p.cantidad)*num(p.pu))}</td>
+                <td class="col-x no-print"><button class="rmrow" onclick="rmP(${ci},${pi})" title="Eliminar">✕</button></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+        <div class="addrow no-print"><button class="mini" onclick="addP(${ci})">+ Agregar rubro</button></div>`;
+      caps.appendChild(el);
+    });
+    renderPagos();
+    recalc();
+    document.querySelectorAll('.rows textarea').forEach(autoGrow);
+  }
+
+  function renderPagos(){
+    const tb = document.getElementById('pagos'); tb.innerHTML='';
+    state.pagos.forEach((pg,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`
+        <td><input value="${esc(pg.concepto)}" placeholder="Ej: Anticipo para inicio de obra" oninput="setPago(${i},'concepto',this.value)"></td>
+        <td><input value="${esc(pg.fecha)}" placeholder="Ej: 15 de junio" oninput="setPago(${i},'fecha',this.value)"></td>
+        <td class="num"><input class="num" type="text" inputmode="decimal" value="${esc(pg.valor)}" oninput="setPago(${i},'valor',this.value)"></td>
+        <td class="col-x no-print"><button class="rmrow" onclick="rmPago(${i})">✕</button></td>`;
+      tb.appendChild(tr);
+    });
+  }
+
+  // ===== Cálculo =====
+  function num(v){ if(typeof v==='number') return v; if(!v) return 0; return parseFloat(String(v).replace(/[^0-9.,-]/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.'))||0; }
+  function subtotalGeneral(){ return state.capitulos.reduce((s,c)=>s+c.partidas.reduce((ss,p)=>ss+num(p.cantidad)*num(p.pu),0),0); }
+  function recalc(){
+    const sub=subtotalGeneral();
+    const ivaPct=num(document.getElementById('ivaPct').value);
+    const iva=sub*ivaPct/100;
+    document.getElementById('t-subtotal').textContent=money(sub);
+    document.getElementById('t-iva').textContent=money(iva);
+    document.getElementById('t-total').textContent=money(sub+iva);
+    document.querySelectorAll('.cap').forEach((el,ci)=>{
+      const st=state.capitulos[ci].partidas.reduce((s,p)=>s+num(p.cantidad)*num(p.pu),0);
+      el.querySelector('.cap-total').textContent=money(st);
+      el.querySelectorAll('.rt').forEach((td,pi)=>{const p=state.capitulos[ci].partidas[pi];td.textContent=money(num(p.cantidad)*num(p.pu));});
+    });
+    // chequeo de pagos
+    const totPag=state.pagos.reduce((s,p)=>s+num(p.valor),0);
+    const total=sub+iva; const chk=document.getElementById('pay-check');
+    if(state.pagos.length===0){chk.textContent='';chk.className='pay-check';}
+    else if(Math.abs(totPag-total)<0.5){chk.textContent='✓ Los pagos suman el total ('+money(totPag)+')';chk.className='pay-check ok';}
+    else{chk.textContent='⚠ Los pagos suman '+money(totPag)+' y el total es '+money(total)+' (diferencia '+money(total-totPag)+')';chk.className='pay-check bad';}
+  }
+
+  // ===== Mutadores =====
+  function setCap(ci,v){state.capitulos[ci].nombre=v;}
+  function setP(ci,pi,k,v){state.capitulos[ci].partidas[pi][k]=v;recalc();}
+  function setPago(i,k,v){state.pagos[i][k]=v;recalc();}
+  function addCap(){state.capitulos.push({nombre:'',partidas:[{descripcion:'',unidad:'GLB',cantidad:'1',pu:''}]});render();}
+  function rmCap(ci){state.capitulos.splice(ci,1);render();}
+  function addP(ci){state.capitulos[ci].partidas.push({descripcion:'',unidad:'GLB',cantidad:'1',pu:''});render();}
+  function rmP(ci,pi){state.capitulos[ci].partidas.splice(pi,1);render();}
+  function addPago(){state.pagos.push({concepto:'',fecha:'',valor:''});renderPagos();}
+  function rmPago(i){state.pagos.splice(i,1);renderPagos();recalc();}
+
+  // ===== Utilidades =====
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function autoGrow(t){t.style.height='auto';t.style.height=(t.scrollHeight)+'px';}
+
+  function resetDoc(){
+    if(!confirm('¿Limpiar toda la cotización?'))return;
+    ['proyecto','cliente','descripcion','direccion','oferta','validez'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('ivaPct').value='0';
+    state={capitulos:[{nombre:'',partidas:[{descripcion:'',unidad:'GLB',cantidad:'1',pu:''}]}],pagos:[]};
+    syncTitulo();render();
+  }
+
+  function enviarWhatsApp(){
+    const p=id=>document.getElementById(id).value;
+    const total=document.getElementById('t-total').textContent;
+    let msg='*COTIZACIÓN MOREAL*%0A';
+    if(p('proyecto'))msg+='Proyecto: '+enc(p('proyecto'))+'%0A';
+    if(p('cliente'))msg+='Cliente: '+enc(p('cliente'))+'%0A';
+    if(p('descripcion'))msg+=enc(p('descripcion'))+'%0A';
+    msg+='%0A';
+    state.capitulos.forEach((c,i)=>{const st=c.partidas.reduce((s,x)=>s+num(x.cantidad)*num(x.pu),0);if(c.nombre||st)msg+=enc((i+1)+'. '+(c.nombre||'Capítulo')+' — '+money(st))+'%0A';});
+    msg+='%0A*TOTAL: '+enc(total)+'*%0A%0A';
+    if(state.pagos.length){msg+='Forma de pago:%0A';state.pagos.forEach(pg=>{if(pg.concepto||pg.valor)msg+=enc('• '+(pg.concepto||'')+(pg.fecha?(' ('+pg.fecha+')'):'')+': '+money(num(pg.valor)))+'%0A';});}
+    window.open('https://wa.me/?text='+msg,'_blank');
+  }
+  function enc(s){return encodeURIComponent(s);}
+
+  // ===== Ejemplo (Casa CC) =====
+  function loadEjemplo(){
+    document.getElementById('proyecto').value='Casa CC — La Brisa';
+    document.getElementById('cliente').value='';
+    document.getElementById('descripcion').value='Remodelación residencial de cocina y patio';
+    document.getElementById('direccion').value='Urb. Ciudad Celeste';
+    document.getElementById('oferta').value='001';
+    document.getElementById('validez').value='15 días';
+    state.capitulos=[
+      {nombre:'TRAZADO Y REPLANTEO',partidas:[
+        {descripcion:'Trazado y replanteo',unidad:'GLB',cantidad:'1',pu:'80'}]},
+      {nombre:'DEMOLICIÓN DE PAREDES EXISTENTES',partidas:[
+        {descripcion:'Demolición de paredes existentes en áreas a trabajar (cocina, lavandería y comedor)',unidad:'GLB',cantidad:'1',pu:'190'},
+        {descripcion:'Desmontaje de ventanales y ventanas existentes',unidad:'UNIDAD',cantidad:'4',pu:'10'}]},
+      {nombre:'OBRA CIVIL',partidas:[
+        {descripcion:'Emblocada de paredes de bloque 9mm en área de lavandería',unidad:'M2',cantidad:'4.39',pu:'13.50'},
+        {descripcion:'Enlucido de pared',unidad:'M2',cantidad:'19.48',pu:'7.75'},
+        {descripcion:'Filos',unidad:'ML',cantidad:'10.20',pu:'2.50'},
+        {descripcion:'Cuadrada de boquetes',unidad:'ML',cantidad:'13.02',pu:'4.25'},
+        {descripcion:'Pilares y viguetas de estructura metálica para pérgola exterior (incluye pintura negra, tumbado PVC maderado, puntos de luz y ventilador)',unidad:'GLB',cantidad:'1',pu:'2250'},
+        {descripcion:'Provisión e instalación de PVC para pared, color café maderado semioscuro (exterior)',unidad:'M2',cantidad:'5.10',pu:'51.50'},
+        {descripcion:'Construcción de mesón exterior para BBQ-social y paredes de parrilla',unidad:'GLB',cantidad:'1',pu:'380'},
+        {descripcion:'Picada de piso y nivelación en patio y pasillos',unidad:'M2',cantidad:'48',pu:'9.50'}]},
+      {nombre:'REVESTIMIENTO',partidas:[
+        {descripcion:'Picada de porcelanato existente de mesón',unidad:'GLB',cantidad:'1',pu:'140'},
+        {descripcion:'Picada de cerámica existente en piso de cocina y lavandería',unidad:'M2',cantidad:'26.30',pu:'3'},
+        {descripcion:'Provisión e instalación de cerámica en piso (incluye bondex y mano de obra)',unidad:'M2',cantidad:'26.30',pu:'26'},
+        {descripcion:'Cerámica en piso exterior, patio y pasillos (incluye bondex y mano de obra)',unidad:'M2',cantidad:'48',pu:'26'},
+        {descripcion:'Porcelanato de mesón 12mm para exterior (área BBQ), gris oscuro',unidad:'M2',cantidad:'1.48',pu:'248'},
+        {descripcion:'Calado de pozos para lavabos y griferías',unidad:'UNIDAD',cantidad:'4',pu:'40'}]},
+      {nombre:'CARPINTERÍA',partidas:[
+        {descripcion:'Reconstrucción de cocina: estructura en isla y patas de mesón; melamínico antihumedad, puertas color CAPRI y TAUPÉ, herrajes cierre lento, iluminación LED indirecta, alacena y repisas; mesón de porcelanato 12mm gris pulido con salpicadera 60cm. Incluye 1 condimentero + riel de tacho.',unidad:'GLB',cantidad:'1',pu:'8200'}]},
+      {nombre:'TUMBADO Y PINTURA',partidas:[
+        {descripcion:'Tumbado de gypsum en cocina y cortinero en comedor (incluye pintura 2 manos color blanco)',unidad:'M2',cantidad:'15.88',pu:'28.50'},
+        {descripcion:'Sellada de paredes interiores existentes',unidad:'GLB',cantidad:'1',pu:'180'},
+        {descripcion:'Pintura satinada en paredes (incluye empaste, mano de obra y pintura)',unidad:'GLB',cantidad:'1',pu:'260'}]},
+      {nombre:'MAMPARAS DE ALUMINIO Y VIDRIO',partidas:[
+        {descripcion:'Puerta de 3 hojas para cocina, perfil nacional color negro',unidad:'M2',cantidad:'4.92',pu:'125'},
+        {descripcion:'Puerta de 4 hojas para comedor, perfil nacional color negro',unidad:'M2',cantidad:'8.63',pu:'125'},
+        {descripcion:'Ventana de 2 hojas para cocina, perfil nacional color negro',unidad:'M2',cantidad:'1.65',pu:'125'}]},
+      {nombre:'SISTEMA HIDROSANITARIO',partidas:[
+        {descripcion:'Punto de drenaje en área de lavandería',unidad:'UNIDAD',cantidad:'1',pu:'50'},
+        {descripcion:'Provisión e instalación de lavarropa (incluye punto de agua fría)',unidad:'UNIDAD',cantidad:'1',pu:'120'},
+        {descripcion:'Punto de agua potable para lavadora (agua fría)',unidad:'UNIDAD',cantidad:'1',pu:'50'},
+        {descripcion:'Provisión y materiales para recorridos de tubería, varios',unidad:'GLB',cantidad:'1',pu:'180'},
+        {descripcion:'Punto de agua potable para lavacopa exterior en pérgola (incluye lavacopa cromado y grifería)',unidad:'UNIDAD',cantidad:'1',pu:'310'}]},
+      {nombre:'PISCINA Y CASCADA DECORATIVA',partidas:[
+        {descripcion:'Piscina 4.20 x 2.20 m, prof. 1.20–1.50 m, rectangular. Estructura de hormigón armado y gradas; bomba 1.0HP con trampa de pelo, filtro de arena, skimmer, 2 retornos, succión de fondo, timmer, reflector LED, cerámica nacional, caminera, equipo de limpieza. Incluye cascada decorativa 1.20m con bomba 3/4 y sistema hidrosanitario.',unidad:'GLB',cantidad:'1',pu:'9650'}]}
+    ];
+    state.pagos=[
+      {concepto:'Anticipo para inicio de obra',fecha:'15 de junio',valor:'10000'},
+      {concepto:'Avance de obra ejecutada',fecha:'15 de julio',valor:'8000'},
+      {concepto:'Pago final contra obra ejecutada',fecha:'15 de agosto',valor:'11000'}
+    ];
+    syncTitulo();render();
+  }
+
+  // ===== Init =====
+  (function init(){
+    document.getElementById('fecha').valueAsDate=new Date();
+    state.capitulos=[{nombre:'',partidas:[{descripcion:'',unidad:'GLB',cantidad:'1',pu:''}]}];
+    render();
+  })();
+</script>
+</body>
+</html>
