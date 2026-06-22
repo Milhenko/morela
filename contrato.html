@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moreal | Contratos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f3f1; --surface:#ffffff; --ink:#141414; --muted:#6b6b6b;
+    --line:rgba(0,0,0,.10); --line-soft:rgba(0,0,0,.06);
+    --accent-soft:rgba(0,0,0,.04); --danger:#b3261e;
+    --serif:'Playfair Display',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 20px 120px;}
+
+  .toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+    background:rgba(244,243,241,.9);backdrop-filter:blur(10px);padding:12px 0;margin-bottom:18px;border-bottom:1px solid var(--line);}
+  .brand{display:flex;flex-direction:column;line-height:1;}
+  .brand b{font-family:var(--serif);font-size:22px;letter-spacing:3px;}
+  .brand span{font-size:8px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+  .actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ink);background:transparent;color:var(--ink);
+    font:600 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:11px 16px;border-radius:6px;cursor:pointer;transition:.2s;}
+  .btn:hover{background:var(--ink);color:#fff;}
+  .btn.solid{background:var(--ink);color:#fff;} .btn.solid:hover{opacity:.85;}
+  .btn.wa{background:#25D366;border-color:#25D366;color:#fff;} .btn.wa:hover{opacity:.9;}
+  .btn.ghost{border-color:var(--line);color:var(--muted);} .btn.ghost:hover{background:var(--accent-soft);color:var(--ink);border-color:var(--ink);}
+  .btn svg{width:15px;height:15px;}
+
+  .doc{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.05);padding:46px 54px 54px;}
+  .doc-logo{text-align:center;margin-bottom:6px;}
+  .doc-logo b{font-family:var(--serif);font-size:26px;letter-spacing:4px;display:block;}
+  .doc-logo span{font-size:8px;letter-spacing:5px;text-transform:uppercase;color:var(--muted);}
+  h1.doc-title{font-family:var(--serif);font-size:23px;font-weight:700;text-align:center;margin:18px 0 26px;line-height:1.3;}
+  p{margin:0 0 12px;font-size:14.5px;text-align:justify;}
+  .clause{margin:20px 0 10px;}
+  .clause h2{font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;}
+
+  /* Campos editables en línea */
+  .fill{display:inline;border-bottom:1px solid var(--line);min-width:60px;padding:0 4px;outline:none;font-weight:600;}
+  .fill:focus{border-bottom-color:var(--ink);background:var(--accent-soft);}
+  .fill.lg{font-weight:700;}
+
+  /* Listas y tablas dinámicas */
+  ul.trabajos{margin:6px 0 6px 6px;list-style:none;}
+  ul.trabajos li{display:flex;gap:8px;align-items:flex-start;padding:2px 0;}
+  ul.trabajos li::before{content:"•";color:var(--muted);font-weight:700;margin-top:5px;}
+  ul.trabajos li input{flex:1;border:none;border-bottom:1px solid var(--line-soft);background:transparent;font:400 14px/1.5 var(--sans);color:var(--ink);padding:4px 2px;}
+  ul.trabajos li input:focus{outline:none;border-bottom-color:var(--ink);}
+
+  table.pay{width:100%;border-collapse:collapse;margin:8px 0;}
+  table.pay th{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px;border-bottom:1px solid var(--ink);}
+  table.pay th.num,table.pay td.num{text-align:right;}
+  table.pay td{padding:3px 6px;border-bottom:1px solid var(--line-soft);}
+  table.pay input{width:100%;border:none;background:transparent;font:400 14px/1.4 var(--sans);padding:6px 4px;color:var(--ink);}
+  table.pay input:focus{outline:none;background:var(--accent-soft);border-radius:4px;}
+  table.pay input.num{text-align:right;}
+  table.pay tr.total td{font-weight:700;border-top:1px solid var(--ink);border-bottom:none;padding-top:8px;}
+  .col-x{width:28px;}
+  .rmrow{border:none;background:transparent;color:#c9c4bd;cursor:pointer;font-size:15px;padding:3px;border-radius:4px;}
+  .rmrow:hover{color:var(--danger);background:rgba(179,38,30,.08);}
+  .mini{font:600 11px/1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);border:1px dashed var(--line);background:transparent;padding:7px 11px;border-radius:6px;cursor:pointer;margin:4px 0;}
+  .mini:hover{border-color:var(--ink);color:var(--ink);}
+
+  .extra textarea{width:100%;border:1px solid var(--line-soft);border-radius:8px;padding:12px;font:400 13.5px/1.6 var(--sans);color:var(--ink);resize:vertical;min-height:70px;}
+
+  /* Firmas */
+  .firmas{display:grid;grid-template-columns:1fr 1fr;gap:40px 60px;margin-top:60px;}
+  .firma{text-align:center;}
+  .firma .line{border-top:1px solid var(--ink);margin-bottom:6px;padding-top:8px;}
+  .firma .nom{font-weight:600;font-size:13.5px;}
+  .firma .sub{font-size:12px;color:var(--muted);}
+  .firma .role{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:36px;}
+  .fecha-line{margin-top:34px;font-size:14px;}
+
+  @media(max-width:640px){.doc{padding:30px 22px;} .firmas{grid-template-columns:1fr;gap:30px;}}
+
+  @media print{
+    @page{margin:16mm;}
+    body{background:#fff;}
+    .wrap{padding:0;max-width:none;}
+    .toolbar,.no-print{display:none !important;}
+    .doc{border:none;box-shadow:none;border-radius:0;padding:0;}
+    .clause{break-inside:avoid;}
+    .fill{border-bottom:none;background:transparent !important;}
+    ul.trabajos li input,table.pay input,.extra textarea{border:none !important;background:transparent !important;}
+    .mini,.rmrow,.col-x{display:none !important;}
+    .firmas{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="toolbar no-print">
+    <div class="brand"><b>MOREAL</b><span>Desarrollos &amp; Obras</span></div>
+    <div class="actions">
+      <button class="btn ghost" onclick="loadEjemplo()">Cargar ejemplo</button>
+      <button class="btn ghost" onclick="limpiar()">Limpiar</button>
+      <button class="btn wa" onclick="enviarWhatsApp()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.407.001 12.017.001c3.207.001 6.22 1.25 8.485 3.515 2.266 2.266 3.514 5.28 3.513 8.486-.003 6.611-5.35 11.961-11.957 11.961a11.95 11.95 0 0 1-5.728-1.456L.057 24z"/></svg>
+        WhatsApp</button>
+      <button class="btn solid" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Imprimir / PDF</button>
+    </div>
+  </div>
+
+  <div class="doc">
+    <div class="doc-logo"><b>MOREAL</b><span>Desarrollos &amp; Obras</span></div>
+    <h1 class="doc-title" id="docTitle" contenteditable="true">ACUERDO COMERCIAL DE EJECUCIÓN DE OBRA</h1>
+
+    <p><strong>Entre:</strong></p>
+    <p>
+      <strong>CONTRATANTE:</strong>
+      <span class="fill lg" id="ct1Nom" contenteditable="true">Nombre del contratante</span>,
+      portador de la cédula No. <span class="fill" id="ct1CI" contenteditable="true">__________</span><span id="ct2Wrap">,
+      y <span class="fill lg" id="ct2Nom" contenteditable="true">Segundo contratante</span>
+      con C.I. <span class="fill" id="ct2CI" contenteditable="true">__________</span></span>.
+    </p>
+    <p>
+      <strong>CONTRATISTA:</strong>
+      <span class="fill lg" id="coNom" contenteditable="true">AMTA STUDIO SAS</span>,
+      con RUC No. <span class="fill" id="coRUC" contenteditable="true">0993399578001</span>,
+      representada por <span class="fill" id="coR1" contenteditable="true">Annie Moscoso</span>
+      con C.I. <span class="fill" id="coR1CI" contenteditable="true">0925380610</span>
+      y <span class="fill" id="coR2" contenteditable="true">Byron Moreira</span>
+      con C.I. <span class="fill" id="coR2CI" contenteditable="true">0926120775</span>.
+    </p>
+    <p>
+      Las partes acuerdan celebrar el presente Acuerdo Comercial para la ejecución de trabajos de
+      <span class="fill" id="tipoObra" contenteditable="true">remodelación</span> de la vivienda ubicada en
+      <span class="fill" id="ubicacion" contenteditable="true">Urb. Ciudad Celeste, etapa ___ mz ___ villa ___</span>,
+      bajo las siguientes cláusulas:
+    </p>
+
+    <div class="clause">
+      <h2>Primera: Objeto</h2>
+      <p>El CONTRATISTA se compromete a ejecutar los trabajos de
+        <span class="fill" id="tipoObra2" contenteditable="true">remodelación</span> de la vivienda.
+        Los trabajos a realizar se detallan en el anexo de presupuesto y de manera general son:</p>
+      <ul class="trabajos" id="trabajos"></ul>
+      <button class="mini no-print" onclick="addTrabajo()">+ Agregar trabajo</button>
+      <p style="margin-top:8px">La propuesta económica y el alcance de obra forman parte integral del presente acuerdo, según propuesta presentada y aprobada por el contratante.</p>
+    </div>
+
+    <div class="clause">
+      <h2>Segunda: Valor del contrato</h2>
+      <p>El valor total de la obra asciende a:
+        <strong>USD $ <span class="fill lg" id="valor" contenteditable="true">29,000.00</span></strong>.
+        Incluye materiales, mano de obra y equipos según el alcance contratado.</p>
+    </div>
+
+    <div class="clause">
+      <h2>Tercera: Forma de pago</h2>
+      <p>El CONTRATANTE realizará los pagos de la siguiente manera:</p>
+      <table class="pay">
+        <thead><tr><th>Concepto</th><th>Fecha</th><th class="num">Valor</th><th class="col-x no-print"></th></tr></thead>
+        <tbody id="pagos"></tbody>
+        <tfoot><tr class="total"><td>Total</td><td></td><td class="num" id="payTotal">$0.00</td><td class="no-print"></td></tr></tfoot>
+      </table>
+      <button class="mini no-print" onclick="addPago()">+ Agregar pago</button>
+    </div>
+
+    <div class="clause">
+      <h2>Cuarta: Plazo de ejecución</h2>
+      <p>El plazo estimado para la ejecución de la obra será de
+        <span class="fill" id="plazo" contenteditable="true">45</span> días calendario,
+        a partir de la entrega del anticipo.</p>
+    </div>
+
+    <div class="clause extra">
+      <h2>Cláusulas adicionales <span class="no-print" style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:11px">(opcional)</span></h2>
+      <textarea id="extra" placeholder="Ej: QUINTA: GARANTÍA — El contratista garantiza la obra por un período de ___ meses. SEXTA: ... (deja vacío si no aplica)"></textarea>
+    </div>
+
+    <p style="margin-top:20px">Para constancia y aceptación, se suscribe el presente documento en la fecha correspondiente.</p>
+
+    <div class="fecha-line">Fecha: <span class="fill" id="fecha" contenteditable="true">10/06/2026</span></div>
+
+    <div class="firmas">
+      <div class="firma">
+        <div class="role">El Contratista</div>
+        <div class="line"></div>
+        <div class="nom" id="f-coNom">AMTA STUDIO SAS</div>
+        <div class="sub" id="f-coReps">Annie Moscoso M. · Byron Moreira A.</div>
+        <div class="sub" id="f-coMail" contenteditable="true">amta.studio@gmail.com</div>
+      </div>
+      <div class="firma">
+        <div class="role">El Contratante</div>
+        <div class="line"></div>
+        <div class="nom" id="f-ctNom">Nombre del contratante</div>
+        <div class="sub" id="f-ctCI">C.I. __________</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let state={trabajos:[],pagos:[]};
+  const money=n=>new Intl.NumberFormat('es-EC',{style:'currency',currency:'USD'}).format(isFinite(n)?n:0);
+  const num=v=>{if(typeof v==='number')return v;if(!v)return 0;return parseFloat(String(v).replace(/[^0-9.,-]/g,'').replace(/\.(?=\d{3}\b)/g,'').replace(',','.'))||0;};
+  const val=id=>document.getElementById(id);
+  const txt=id=>{const e=val(id);return e?(e.value!==undefined?e.value:e.textContent).trim():'';};
+  function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+  function renderTrabajos(){
+    const ul=val('trabajos');ul.innerHTML='';
+    state.trabajos.forEach((t,i)=>{
+      const li=document.createElement('li');
+      li.innerHTML=`<input value="${esc(t)}" placeholder="Descripción del trabajo" oninput="state.trabajos[${i}]=this.value">
+        <button class="rmrow no-print" onclick="state.trabajos.splice(${i},1);renderTrabajos()">✕</button>`;
+      ul.appendChild(li);
+    });
+  }
+  function addTrabajo(){state.trabajos.push('');renderTrabajos();val('trabajos').lastElementChild.querySelector('input').focus();}
+
+  function renderPagos(){
+    const tb=val('pagos');tb.innerHTML='';
+    state.pagos.forEach((p,i)=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td><input value="${esc(p.concepto)}" placeholder="Ej: Anticipo para inicio de obra" oninput="state.pagos[${i}].concepto=this.value"></td>
+        <td><input value="${esc(p.fecha)}" placeholder="Ej: 15 de junio" oninput="state.pagos[${i}].fecha=this.value"></td>
+        <td class="num"><input class="num" inputmode="decimal" value="${esc(p.valor)}" oninput="state.pagos[${i}].valor=this.value;payTotal()"></td>
+        <td class="col-x no-print"><button class="rmrow" onclick="state.pagos.splice(${i},1);renderPagos();payTotal()">✕</button></td>`;
+      tb.appendChild(tr);
+    });
+    payTotal();
+  }
+  function addPago(){state.pagos.push({concepto:'',fecha:'',valor:''});renderPagos();}
+  function payTotal(){val('payTotal').textContent=money(state.pagos.reduce((s,p)=>s+num(p.valor),0));}
+
+  // Sincronizar firmas con los datos
+  function syncFirmas(){
+    val('f-coNom').textContent=txt('coNom')||'—';
+    val('f-coReps').textContent=[txt('coR1'),txt('coR2')].filter(Boolean).join(' · ');
+    val('f-ctNom').textContent=[txt('ct1Nom'),txt('ct2Nom')].filter(x=>x&&x!=='Segundo contratante').join(' / ')||'—';
+    val('f-ctCI').textContent='C.I. '+[txt('ct1CI'),txt('ct2CI')].filter(x=>x&&x!=='__________').join(' / ');
+  }
+  document.addEventListener('input',e=>{if(e.target.classList&&e.target.classList.contains('fill'))syncFirmas();});
+
+  function enviarWhatsApp(){
+    let m='*'+enc(txt('docTitle'))+'*%0A%0A';
+    m+=enc('Contratante: '+txt('ct1Nom')+(txt('ct2Nom')&&txt('ct2Nom')!=='Segundo contratante'?(' / '+txt('ct2Nom')):''))+'%0A';
+    m+=enc('Contratista: '+txt('coNom'))+'%0A';
+    m+=enc('Obra: '+txt('tipoObra')+' — '+txt('ubicacion'))+'%0A%0A';
+    if(state.trabajos.filter(Boolean).length){m+='*Alcance:*%0A';state.trabajos.filter(Boolean).forEach(t=>m+=enc('• '+t)+'%0A');m+='%0A';}
+    m+='*Valor:* USD $'+enc(txt('valor'))+'%0A';
+    m+='*Plazo:* '+enc(txt('plazo'))+' días calendario%0A%0A';
+    if(state.pagos.length){m+='*Forma de pago:*%0A';state.pagos.forEach(p=>{if(p.concepto||p.valor)m+=enc('• '+(p.concepto||'')+(p.fecha?(' ('+p.fecha+')'):'')+': '+money(num(p.valor)))+'%0A';});}
+    window.open('https://wa.me/?text='+m,'_blank');
+  }
+  function enc(s){return encodeURIComponent(s);}
+
+  function setFill(id,v){const e=val(id);if(e)e.textContent=v;}
+  function limpiar(){
+    if(!confirm('¿Limpiar el contrato?'))return;
+    ['ct1Nom','ct2Nom'].forEach(id=>setFill(id,id==='ct1Nom'?'Nombre del contratante':'Segundo contratante'));
+    ['ct1CI','ct2CI'].forEach(id=>setFill(id,'__________'));
+    setFill('tipoObra','remodelación');setFill('tipoObra2','remodelación');
+    setFill('ubicacion','Urb. ___');setFill('valor','0.00');setFill('plazo','45');
+    state={trabajos:[''],pagos:[{concepto:'',fecha:'',valor:''}]};renderTrabajos();renderPagos();syncFirmas();
+  }
+
+  function loadEjemplo(){
+    setFill('ct1Nom','Alejandro Ramos Bobadilla');setFill('ct1CI','0916890635');
+    setFill('ct2Nom','María Egas Vera');setFill('ct2CI','0930794473');
+    setFill('coNom','AMTA STUDIO SAS');setFill('coRUC','0993399578001');
+    setFill('coR1','Annie Moscoso');setFill('coR1CI','0925380610');
+    setFill('coR2','Byron Moreira');setFill('coR2CI','0926120775');
+    setFill('tipoObra','remodelación');setFill('tipoObra2','remodelación');
+    setFill('ubicacion','Urb. Ciudad Celeste, etapa ___ mz ___ villa ___');
+    setFill('valor','29,000.00');setFill('plazo','45');setFill('fecha','10/06/2026');
+    state.trabajos=['Remodelación de cocina','Remodelación de exterior con pérgola','Construcción de piscina'];
+    state.pagos=[
+      {concepto:'Anticipo para inicio de obra',fecha:'15 de junio',valor:'10000'},
+      {concepto:'Avance de obra ejecutada',fecha:'15 de julio',valor:'8000'},
+      {concepto:'Pago final contra obra ejecutada',fecha:'15 de agosto',valor:'11000'}
+    ];
+    renderTrabajos();renderPagos();syncFirmas();
+  }
+
+  (function init(){
+    state.trabajos=[''];state.pagos=[{concepto:'',fecha:'',valor:''}];
+    renderTrabajos();renderPagos();syncFirmas();
+  })();
+</script>
+</body>
+</html>
