@@ -180,6 +180,26 @@
             box-shadow: 0 0 15px var(--accent-glow);
         }
 
+        .nav-login {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            opacity: 0.85;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-login svg { width: 15px; height: 15px; }
+
+        .nav-login:hover {
+            opacity: 1;
+            color: var(--accent);
+        }
+
         .nav-toggle {
             display: none;
             flex-direction: column;
@@ -1341,6 +1361,10 @@
                     <li><a href="#proceso">Proceso</a></li>
                 </ul>
             </nav>
+            <a href="https://app-moreal.vercel.app" class="nav-login">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                Iniciar sesión
+            </a>
             <a href="#cotizar" class="nav-cta" onclick="triggerCTA()">Cotizar</a>
             <button class="nav-toggle" aria-label="Menu" onclick="toggleMobileMenu()">
                 <span></span>
@@ -1360,6 +1384,10 @@
             <li><a href="#proceso" onclick="closeMobileMenu()">Proceso</a></li>
         </ul>
         <a href="#servicios" class="nav-cta-mobile" onclick="closeMobileMenu()">Cotizar Ahora</a>
+        <a href="https://app-moreal.vercel.app" class="nav-login" style="margin-top:16px;justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Iniciar sesión
+        </a>
     </div>
 
     <!-- MÓDULO 1: HERO SECTION -->
