@@ -236,6 +236,19 @@
         /* Hero: palabra destacada en blanco */
         .hero h1 em { color: #ffffff; }
     </style>
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+      n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+      document,'script','https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1026354890344347');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1026354890344347&ev=PageView&noscript=1"/></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -532,16 +545,50 @@
         const formState = { currentStep: 1, totalSteps: 4, answers: {} };
 
         /* ===== Conexión con el CRM (Google Sheet vía Apps Script) ===== */
-        const CRM_ENDPOINT = "https://script.google.com/macros/s/AKfycbwFnOg_Wlp9ynChkvcA56p6-acOXPALXZjz15_6ECzRQhVTxQcoupBb5Gj4I2gzVNJy/exec"; /* <-- PEGA AQUÍ la URL /exec de tu Apps Script */
+        const SUPABASE_URL = "https://ufmsauetgllwvepemtqb.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_2Ls6PZfLJilikDPor_6adw_rgqjpDEb"; /* publishable key — segura en el navegador */
 
         function sendToCRM(payload) {
-            if (!CRM_ENDPOINT) return; /* aún no configurado: el formulario sigue funcionando */
+            /* ===== Meta: evento Lead (Pixel del navegador) ===== */
+            var eventId = 'lead.' + Date.now() + '.' + Math.floor(Math.random() * 1e6);
             try {
-                fetch(CRM_ENDPOINT, {
+                if (window.fbq) fbq('track', 'Lead', { content_name: payload.origen || 'Lead Web' }, { eventID: eventId });
+            } catch (e) { /* no bloquear si el Pixel no cargó */ }
+
+            /* ===== Canal según el origen de la pauta (UTM) ===== */
+            var src = (payload.utm_source || '').toLowerCase();
+            var canal = 'Formulario Web';
+            if (/facebook|instagram|meta|^fb$|^ig$/.test(src)) canal = 'Meta Ads';
+            else if (/google|gads|adwords/.test(src)) canal = 'Google Ads';
+
+            /* ===== Inserción directa en Supabase (tabla leads) ===== */
+            var lead = {
+                canal: canal,
+                estatus: 'Nuevo',
+                nombre: payload.nombre || '',
+                email: payload.email || '',
+                telefono: payload.telefono || '',
+                servicio: payload.origen || null,
+                detalle1: payload.paso1 || null,
+                detalle2: payload.paso2 || null,
+                detalle3: payload.paso3 || null,
+                utm_source: payload.utm_source || null,
+                utm_medium: payload.utm_medium || null,
+                utm_campaign: payload.utm_campaign || null,
+                utm_term: payload.utm_term || null,
+                utm_content: payload.utm_content || null,
+                notas: 'Ingresó por ' + (payload.origen || 'formulario web')
+            };
+            try {
+                fetch(SUPABASE_URL + '/rest/v1/leads', {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_KEY,
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(lead)
                 });
             } catch (e) { /* no bloquear la experiencia del usuario */ }
         }
