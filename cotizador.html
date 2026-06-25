@@ -123,7 +123,7 @@
     textarea{overflow:visible;}
   }
 </style>
-    <!-- Meta Pixel Code -->
+    <!-- Meta Pixel + CAPI Code -->
     <script>
       !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
       n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -131,11 +131,33 @@
       t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
       document,'script','https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '1026354890344347');
-      fbq('track', 'PageView');
+
+      /* ===== CAPI (servidor) — Supabase Edge Function, deduplicado por event_id ===== */
+      window.META_CAPI_ENDPOINT = 'https://ufmsauetgllwvepemtqb.supabase.co/functions/v1/meta-capi';
+      window.mrealCapi = function (eventName, extra, eventId) {
+        try {
+          fetch(window.META_CAPI_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({
+              event_name: eventName,
+              event_id: eventId,
+              fbp: (document.cookie.match(/_fbp=([^;]+)/) || [])[1] || '',
+              fbc: (document.cookie.match(/_fbc=([^;]+)/) || [])[1] || '',
+              event_source_url: location.href
+            }, extra || {}))
+          });
+        } catch (e) {}
+      };
+
+      /* PageView en navegador + servidor (mismo event_id para deduplicar) */
+      var _pvId = 'pv.' + Date.now() + '.' + Math.floor(Math.random() * 1e6);
+      fbq('track', 'PageView', {}, { eventID: _pvId });
+      window.mrealCapi('PageView', {}, _pvId);
     </script>
     <noscript><img height="1" width="1" style="display:none"
       src="https://www.facebook.com/tr?id=1026354890344347&ev=PageView&noscript=1"/></noscript>
-    <!-- End Meta Pixel Code -->
+    <!-- End Meta Pixel + CAPI Code -->
 </head>
 <body>
 <div class="wrap">
