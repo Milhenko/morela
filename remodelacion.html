@@ -1367,6 +1367,30 @@
         /* Hero: texto destacado en blanco */
         .hero-remodel .text-accent,
         .hero-remodel .hero-tagline { color: #ffffff; }
+
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 998;
+            width: 58px;
+            height: 58px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 28px rgba(37, 211, 102, .45);
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+        .whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 14px 40px rgba(37, 211, 102, .6); }
+        .whatsapp-float svg { width: 28px; height: 28px; fill: #fff; }
+        @media (max-width: 768px) {
+            .whatsapp-float { bottom: 20px; right: 20px; width: 52px; height: 52px; }
+            .whatsapp-float svg { width: 25px; height: 25px; }
+        }
     </style>
     <!-- Meta Pixel + CAPI Code -->
     <script>
@@ -2088,6 +2112,11 @@
             }
         }
     </script>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/14058709791?text=Hola,%20me%20interesa%20una%20Remodelaci%C3%B3n%20Residencial%20con%20Moreal." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat con WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.665.989 3.3.15 5.272.15 5.41-.002 9.814-4.402 9.817-9.813.002-2.622-1.017-5.086-2.87-6.941C16.99 1.01 14.516.02 11.89.022 6.48.024 2.078 4.426 2.075 9.837c-.001 1.97.513 3.894 1.49 5.588L2.53 21.37l6.117-1.604z"/></svg>
+    </a>
 
 </body>
 </html>
