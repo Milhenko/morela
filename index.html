@@ -27,6 +27,8 @@
             --accent-rgb: 31, 31, 31;    /* Acento en RGB para tintes/sombras */
             --border-rgb: 0, 0, 0;       /* Bordes hairline sobre fondo claro */
             --accent-glow: rgba(31, 31, 31, 0.15);
+            --gold: #b0894e;             /* Bronce arquitectónico: contraste premium en hover */
+            --gold-rgb: 176, 137, 78;
 
             --font-serif: 'Playfair Display', Georgia, serif;
             --font-sans: 'Montserrat', Helvetica, Arial, sans-serif;
@@ -556,17 +558,17 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background-color: var(--accent);
+            background-color: var(--gold);
             transform: scaleX(0);
             transform-origin: left;
             transition: var(--transition-smooth);
         }
 
         .pillar-card:hover {
-            background: rgba(var(--border-rgb), 0.02);
-            border-color: rgba(var(--accent-rgb), 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            background: var(--bg-secondary);
+            border-color: rgba(var(--gold-rgb), 0.5);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 44px rgba(var(--gold-rgb), 0.18), 0 12px 30px rgba(0, 0, 0, 0.12);
         }
 
         .pillar-card:hover::before {
@@ -588,10 +590,11 @@
         }
 
         .pillar-card:hover .icon-container {
-            background: var(--accent);
-            color: var(--bg-primary);
-            box-shadow: 0 0 15px var(--accent-glow);
-            border-color: var(--accent);
+            background: var(--gold);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(var(--gold-rgb), 0.4);
+            border-color: var(--gold);
+            transform: scale(1.08) rotate(-3deg);
         }
 
         .pillar-icon {
@@ -610,7 +613,7 @@
         }
 
         .pillar-card:hover .pillar-title {
-            color: var(--accent-hover);
+            color: var(--gold);
         }
 
         .pillar-desc {
@@ -675,13 +678,56 @@
             display: flex;
             flex-direction: column;
             height: 100%;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
 
         .project-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(var(--accent-rgb), 0.2);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px);
+            border-color: rgba(var(--gold-rgb), 0.5);
+            box-shadow: 0 20px 44px rgba(var(--gold-rgb), 0.18), 0 12px 30px rgba(0, 0, 0, 0.12);
         }
+
+        /* Sello Instagram sobre la imagen */
+        .ig-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 11px;
+            border-radius: 999px;
+            background: rgba(10, 10, 10, 0.55);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .ig-badge svg { width: 14px; height: 14px; }
+
+        /* Enlace "Ver publicación" al pie de la tarjeta */
+        .project-link {
+            margin-top: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+        }
+        .project-link svg { width: 15px; height: 15px; transition: var(--transition-smooth); }
+        .project-card:hover .project-link { color: var(--gold); }
+        .project-card:hover .project-link svg { transform: translateX(4px); }
 
         .project-image-wrapper {
             position: relative;
@@ -748,9 +794,9 @@
         }
 
         .project-card:hover .project-badge {
-            border-color: var(--accent-hover);
-            color: var(--accent-hover);
-            background-color: rgba(var(--accent-rgb), 0.08);
+            border-color: var(--gold);
+            color: var(--gold);
+            background-color: rgba(var(--gold-rgb), 0.08);
         }
 
         .project-card-desc {
@@ -949,12 +995,31 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--gold);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-smooth);
         }
 
         .step-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(var(--accent-rgb), 0.3);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px);
+            border-color: rgba(var(--gold-rgb), 0.5);
+            box-shadow: 0 20px 44px rgba(var(--gold-rgb), 0.18), 0 12px 30px rgba(0, 0, 0, 0.12);
+            background-color: var(--bg-secondary);
+        }
+
+        .step-card:hover::before {
+            transform: scaleX(1);
         }
 
         .step-number {
@@ -968,9 +1033,9 @@
         }
 
         .step-card:hover .step-number {
-            color: var(--accent-hover);
-            transform: scale(1.08);
-            text-shadow: 0 0 15px var(--accent-glow);
+            color: var(--gold);
+            transform: scale(1.1);
+            text-shadow: 0 6px 18px rgba(var(--gold-rgb), 0.3);
         }
 
         .step-title {
@@ -987,6 +1052,23 @@
             color: var(--text-secondary);
             line-height: 1.6;
             font-weight: 300;
+        }
+
+        /* Aparición al hacer scroll (se activa por JS; sin JS todo queda visible) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.in-view {
+            opacity: 1;
+            transform: none;
+        }
+        .pillars-grid .reveal:nth-child(2), .timeline-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .pillars-grid .reveal:nth-child(3), .timeline-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .pillars-grid .reveal:nth-child(4), .timeline-grid .reveal:nth-child(4) { transition-delay: 0.3s; }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
         }
 
         /* ==========================================================================
@@ -1465,6 +1547,11 @@
     <!-- MÓDULO 2: CINTURÓN DE CONFIANZA -->
     <section class="trust-belt" id="garantias">
         <div class="container">
+            <div class="section-header">
+                <p class="section-tagline">Por Qué Elegirnos</p>
+                <h2 class="section-title">Cimientos de <span class="text-accent">Confianza.</span></h2>
+                <p class="section-description">Cada obra se sostiene sobre trayectoria comprobable, contratos blindados y respaldo de ingenieros colegiados. Así eliminamos la improvisación.</p>
+            </div>
             <div class="pillars-grid">
                 
                 <!-- Pilar 1: +10 Años -->
@@ -1549,104 +1636,85 @@
             
             <div class="projects-grid">
                 
-                <!-- Tarjeta Proyecto 1 -->
-                <div class="project-card">
+                <!-- ============================================================
+                     PORTAFOLIO INSTAGRAM · 3 últimos posts
+                     Para cada tarjeta, cambia SOLO 3 cosas:
+                       1) href="..."      → el link del post de Instagram
+                       2) src="..."       → la imagen del post (súbela a esta carpeta)
+                       3) el título y la descripción (texto del post)
+                     ============================================================ -->
+
+                <!-- Post 1 -->
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="project_1.png" alt="Residencia en Vía a la Costa" class="project-image">
+                        <img src="project_1.png" alt="Publicación de Instagram · Moreal" class="project-image">
                         <div class="project-overlay"></div>
+                        <span class="ig-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            Instagram
+                        </span>
                     </div>
                     <div class="project-info">
                         <h3 class="project-card-title">Residencia en Vía a la Costa</h3>
                         <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Obra Entregada</span>
                             <span class="project-badge">Presupuesto Cerrado</span>
                         </div>
-                        <p class="project-card-desc">Construcción integral de una residencia de lujo de 450 m². Proceso completado en el plazo exacto de 8 meses.</p>
+                        <p class="project-card-desc">Construcción integral de una residencia de lujo de 450 m², entregada en el plazo exacto pactado.</p>
+                        <span class="project-link">
+                            Ver publicación
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </span>
                     </div>
-                </div>
+                </a>
 
-                <!-- Tarjeta Proyecto 2 -->
-                <div class="project-card">
+                <!-- Post 2 -->
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="project_2.png" alt="Edificio Residencial La Luna" class="project-image">
+                        <img src="project_2.png" alt="Publicación de Instagram · Moreal" class="project-image">
                         <div class="project-overlay"></div>
+                        <span class="ig-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            Instagram
+                        </span>
                     </div>
                     <div class="project-info">
                         <h3 class="project-card-title">Edificio Residencial La Luna</h3>
                         <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Obra Entregada</span>
                             <span class="project-badge">Presupuesto Cerrado</span>
                         </div>
-                        <p class="project-card-desc">Desarrollo de condominio de 6 plantas y áreas comunes. Entregado sin adendas de costo ni retrasos de obra civil.</p>
+                        <p class="project-card-desc">Condominio de 6 plantas y áreas comunes, entregado sin adendas de costo ni retrasos.</p>
+                        <span class="project-link">
+                            Ver publicación
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </span>
                     </div>
-                </div>
+                </a>
 
-                <!-- Tarjeta Proyecto 3 -->
-                <div class="project-card">
+                <!-- Post 3 -->
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener" class="project-card">
                     <div class="project-image-wrapper">
-                        <img src="project_3.png" alt="Villa Renacimiento" class="project-image">
+                        <img src="project_3.png" alt="Publicación de Instagram · Moreal" class="project-image">
                         <div class="project-overlay"></div>
+                        <span class="ig-badge">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            Instagram
+                        </span>
                     </div>
                     <div class="project-info">
                         <h3 class="project-card-title">Villa Renacimiento</h3>
                         <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
+                            <span class="project-badge">Obra Entregada</span>
                             <span class="project-badge">Presupuesto Cerrado</span>
                         </div>
-                        <p class="project-card-desc">Remodelación estructural profunda y ampliación de casa unifamiliar. Costos garantizados contractualmente.</p>
+                        <p class="project-card-desc">Remodelación estructural profunda y ampliación, con costos garantizados por contrato.</p>
+                        <span class="project-link">
+                            Ver publicación
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </span>
                     </div>
-                </div>
-
-                <!-- Tarjeta Proyecto 4 -->
-                <!-- TEMP: reemplazar src por foto real -->
-                <div class="project-card">
-                    <div class="project-image-wrapper">
-                        <img src="remodelacion_bg.png" alt="Proyecto Moreal" class="project-image">
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-card-title">Proyecto 4 (editable)</h3>
-                        <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
-                            <span class="project-badge">Presupuesto Cerrado</span>
-                        </div>
-                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
-                    </div>
-                </div>
-
-                <!-- Tarjeta Proyecto 5 -->
-                <!-- TEMP: reemplazar src por foto real -->
-                <div class="project-card">
-                    <div class="project-image-wrapper">
-                        <img src="render_3d_kitchen.png" alt="Proyecto Moreal" class="project-image">
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-card-title">Proyecto 5 (editable)</h3>
-                        <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
-                            <span class="project-badge">Presupuesto Cerrado</span>
-                        </div>
-                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
-                    </div>
-                </div>
-
-                <!-- Tarjeta Proyecto 6 -->
-                <!-- TEMP: reemplazar src por foto real -->
-                <div class="project-card">
-                    <div class="project-image-wrapper">
-                        <img src="hero_background.png" alt="Proyecto Moreal" class="project-image">
-                        <div class="project-overlay"></div>
-                    </div>
-                    <div class="project-info">
-                        <h3 class="project-card-title">Proyecto 6 (editable)</h3>
-                        <div class="project-badges">
-                            <span class="project-badge">Plazo Cumplido</span>
-                            <span class="project-badge">Presupuesto Cerrado</span>
-                        </div>
-                        <p class="project-card-desc">Descripción del proyecto. Reemplaza este texto y la foto por los reales de tu obra.</p>
-                    </div>
-                </div>
+                </a>
 
             </div>
 
@@ -1740,8 +1808,8 @@
     <section class="process" id="proceso">
         <div class="container">
             <div class="section-header">
-                <p class="section-tagline">Metodología de Trabajo</p>
-                <h2 class="section-title">Una Metodología Clara. <span class="text-accent">Cero Estrés.</span></h2>
+                <p class="section-tagline">Sistema de Trabajo</p>
+                <h2 class="section-title">Un Sistema Claro. <span class="text-accent">Cero Estrés.</span></h2>
                 <p class="section-description">
                     Olvídate del desorden y la incertidumbre. Hemos diseñado un proceso de 4 pasos para que disfrutes la transformación de tu patrimonio con total tranquilidad.
                 </p>
@@ -1792,7 +1860,7 @@
     <!-- MÓDULO 6: LLAMADO A LA ACCIÓN FINAL (CTA) -->
     <section class="cta-section" id="cotizar">
         <div class="container cta-content">
-            <h2 class="cta-title">¿Listo para asegurar tu patrimonio sin sorpresas?</h2>
+            <h2 class="cta-title">¿Listo para construir con presupuesto cerrado y cero sorpresas?</h2>
             <p class="cta-desc">
                 Agenda una asesoría técnica sin costo. Analizamos la viabilidad de tu proyecto, los metros cuadrados y te entregamos una proyección clara.
             </p>
@@ -1826,14 +1894,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                     </svg>
-                    <span>+593 99 999 9999</span>
+                    <a href="tel:+593964192437" style="color:inherit;text-decoration:none;">+593 96 419 2437</a>
                 </div>
                 <div class="footer-contact-item">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                         <polyline points="22,6 12,13 2,6"></polyline>
                     </svg>
-                    <span>contacto@moreal.com.ec</span>
+                    <a href="mailto:surati@habitatrealtygroupai.com" style="color:inherit;text-decoration:none;">surati@habitatrealtygroupai.com</a>
                 </div>
                 <div class="footer-contact-item">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1897,6 +1965,22 @@
         function triggerWhatsApp() {
             window.open("https://wa.me/14058709791?text=Hola,%20quisiera%20cotizar%20un%20proyecto%20con%20Moreal", "_blank");
         }
+
+        // Aparición progresiva de tarjetas al hacer scroll
+        (function () {
+            var cards = document.querySelectorAll('.pillar-card, .step-card');
+            if (!('IntersectionObserver' in window) || !cards.length) return;
+            cards.forEach(function (c) { c.classList.add('reveal'); });
+            var obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('in-view');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            cards.forEach(function (c) { obs.observe(c); });
+        })();
 
         // Placeholder para menú móvil interactivo
         function toggleMobileMenu() {
