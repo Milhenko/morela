@@ -848,16 +848,16 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background-color: var(--accent);
+            background-color: var(--gold);
             transform: scaleX(0);
             transform-origin: left;
             transition: var(--transition-smooth);
         }
 
         .service-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(var(--accent-rgb), 0.3);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(-10px);
+            border-color: rgba(var(--gold-rgb), 0.5);
+            box-shadow: 0 20px 44px rgba(var(--gold-rgb), 0.18), 0 12px 30px rgba(0, 0, 0, 0.12);
         }
 
         .service-card:hover::before {
@@ -865,10 +865,11 @@
         }
 
         .service-card:hover .icon-container {
-            background: var(--accent);
-            color: var(--bg-primary);
-            box-shadow: 0 0 15px var(--accent-glow);
-            border-color: var(--accent);
+            background: var(--gold);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(var(--gold-rgb), 0.4);
+            border-color: var(--gold);
+            transform: scale(1.08) rotate(-3deg);
         }
 
         .service-title {
@@ -882,7 +883,7 @@
         }
 
         .service-card:hover .service-title {
-            color: var(--accent-hover);
+            color: var(--gold);
         }
 
         .service-desc {
@@ -913,10 +914,10 @@
         }
 
         .btn-outline:hover {
-            background-color: var(--accent);
-            color: var(--bg-primary);
-            box-shadow: 0 0 15px var(--accent-glow);
-            border-color: var(--accent);
+            background-color: var(--gold);
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(var(--gold-rgb), 0.35);
+            border-color: var(--gold);
         }
 
         /* Botón de Instagram (portafolio) */
@@ -1064,8 +1065,8 @@
             opacity: 1;
             transform: none;
         }
-        .pillars-grid .reveal:nth-child(2), .timeline-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
-        .pillars-grid .reveal:nth-child(3), .timeline-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .pillars-grid .reveal:nth-child(2), .timeline-grid .reveal:nth-child(2), .services-grid .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .pillars-grid .reveal:nth-child(3), .timeline-grid .reveal:nth-child(3), .services-grid .reveal:nth-child(3) { transition-delay: 0.2s; }
         .pillars-grid .reveal:nth-child(4), .timeline-grid .reveal:nth-child(4) { transition-delay: 0.3s; }
         @media (prefers-reduced-motion: reduce) {
             .reveal { opacity: 1; transform: none; transition: none; }
@@ -1968,7 +1969,7 @@
 
         // Aparición progresiva de tarjetas al hacer scroll
         (function () {
-            var cards = document.querySelectorAll('.pillar-card, .step-card');
+            var cards = document.querySelectorAll('.pillar-card, .step-card, .service-card');
             if (!('IntersectionObserver' in window) || !cards.length) return;
             cards.forEach(function (c) { c.classList.add('reveal'); });
             var obs = new IntersectionObserver(function (entries) {
